@@ -714,30 +714,8 @@ onUnmounted(() => {
             </div>
             <div class="absolute bottom-1 left-2 right-2">
               <div class="flex items-center justify-between">
-                <div class="flex space-x-2">
-                  <NTooltip trigger="hover" placement="bottom-end" :disabled="isMobile">
-                    <template #trigger>
-                      <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="toggleUsingContext">
-                        <span class="" :class="{ 'text-[#3076fd]': usingContext, 'text-[#a8071a]': !usingContext }"><SvgIcon class="text-lg" style="width: 1em;height: 1em" icon="ri:chat-history-line" /></span>
-                      </button>
-                    </template>
-                    上下文状态
-                  </NTooltip>
-                </div>
+                <div class="flex space-x-2" />
                 <div class="flex justify-between items-center ">
-                  <div class="flex items-center text-neutral-400 cursor-pointer hover:text-[#3076fd] ">
-                    <span class="ml-2 mr-2 text-xs" @click="toggleUsingNetwork">{{ usingNetwork ? '关闭' : '开启' }}联网访问</span>
-                    <NTooltip trigger="hover" :disabled="isMobile">
-                      <template #trigger>
-                        <SvgIcon icon="zondicons:network" class="cursor-pointer mb-0.5" :class="[{ 'text-[#3076fd]': usingNetwork, '': !usingNetwork }]" @click="toggleUsingNetwork" />
-                      </template>
-                      {{ usingNetwork ? '关闭联网模式' : '开启联网模式' }}
-                    </NTooltip>
-                    <div class="mx-4 h-full text-neutral-300 dark:text-neutral-600">
-                      |
-                    </div>
-                  </div>
-
                   <NButton type="primary" size="small" style="padding: 0px; width: 28px; height: 28px; border: 0px;" :disabled="buttonDisabled" round @click="handleSubmit">
                     <template #icon>
                       <span class="dark:text-black">
