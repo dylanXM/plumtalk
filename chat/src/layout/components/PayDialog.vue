@@ -35,6 +35,7 @@ const isWxEnv = computed(() => {
 /* 开启的支付平台 */
 const payPlatform = computed(() => {
   const { payHupiStatus, payEpayStatus, payMpayStatus, payWechatStatus, payAliStatus } = authStore.globalConfig
+  console.log('payHupiStatus', payHupiStatus, payEpayStatus, payMpayStatus, payWechatStatus, payAliStatus)
   if (Number(payWechatStatus) === 1)
     return 'wechat'
 
@@ -173,6 +174,8 @@ function handleFinish() {
   useGlobal.updatePayDialog(false)
   // useGlobal.updateGoodsDialog(true)
 }
+
+console.log('payPlatform', payPlatform.value)
 </script>
 
 <template>
@@ -244,6 +247,9 @@ function handleFinish() {
 
               <!-- hupi -->
               <iframe v-if="payPlatform === 'hupi' && !redirectloading" class="w-[280px] h-[280px] scale-90" :src="url_qrcode" frameborder="0" />
+
+              <!-- ali -->
+              <QRCode v-if="payPlatform === 'ali' && !qrCodeloading" :value="url_qrcode" :size="240" />
             </div>
             <span v-if="!isRedirectPay" class="flex items-center justify-center text-lg ">
               {{ `打开${plat}扫码支付` }}

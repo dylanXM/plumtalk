@@ -298,7 +298,7 @@ onMounted(() => {
           </el-col>
           <el-col :span="11">
             <el-form-item label="设置套餐价格" prop="price">
-              <el-input v-model.number="formPackage.price" placeholder="请填写套餐价格(￥)最多两位小数" type="number" />
+              <el-input v-model="formPackage.price" placeholder="请填写套餐价格(￥)最多两位小数" />
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="2">

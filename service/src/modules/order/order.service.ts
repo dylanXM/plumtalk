@@ -37,7 +37,6 @@ export class OrderService {
       const order = await this.create(userId, goodsId, count, payType);
       console.log('order: ', order);
       const res = await this.payService.pay(userId, order.orderId, payType);
-      console.log('res: ', res);
       return {
         ...res,
         orderId: order.orderId,

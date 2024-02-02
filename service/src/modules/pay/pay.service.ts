@@ -91,25 +91,20 @@ export class PayService {
 
   /** 支付宝支付结果通知 */
   async notifyAli(params: object) {
-    console.log('支付宝支付 params: ', params);
-    const { payAliMchId, payAliMchKey, payAliMchSecret } = await this.globalConfigService.getConfigs([
-      'payAliMchId',
-      'payAliMchKey',
-      'payAliMchSecret',
-    ]);
-    const alipaySdk = (await importDynamic('alipay-sdk'))?.default;
-
-    if (!alipaySdk) {
-      throw new HttpException('支付宝SDK加载失败', HttpStatus.BAD_REQUEST);
+    // 接受支付宝通知的参数
+    const out_trade_no = params['out_trade_no'];
+    const trade_status = params['trade_status'];
+    // 查询订单
+    const order = await this.orderEntity.findOne({ where: { orderId: out_trade_no, status: 0 } });
+    if (!order) return 'failed';
+    // 更新订单状态
+    const status = trade_status == 'TRADE_SUCCESS' ? 1 : 2;
+    const result = await this.orderEntity.update({ orderId: out_trade_no }, { status, paydAt: new Date() });
+    if (status === 1) {
+      await this.userBalanceService.addBalanceToOrder(order);
     }
-
-    const alipay = new alipaySdk({
-      appId: payAliMchId,
-      privateKey: payAliMchSecret,
-      alipayPublicKey: payAliMchKey,
-      signType: 'RSA2',
-      // gateway: 'https://openapi.alipay.com/gateway.do',
-    });
+    if (result.affected != 1) return 'failed';
+    return 'success';
   }
 
   /** 支付宝支付 */
@@ -126,40 +121,30 @@ export class PayService {
       'payAliH5Url',
     ]);
 
+    console.log('支付宝支付参数: ', payAliMchId, payAliMchKey, payAliMchSecret, payAliNotifyUrl, payAliH5Url);
+
     const alipay = new this.AliPay({
       appId: payAliMchId,
       privateKey: payAliMchSecret,
       alipayPublicKey: payAliMchKey,
-      signType: 'RSA2',
-      // gateway: 'https://openapi.alipay.com/gateway.do',
     });
 
     const params = {
       subject: goods.name,
       out_trade_no: orderId,
-      total_amount: order.total,
+      total_amount: Number(order.total),
+      product_code: 'FACE_TO_FACE_PAYMENT',
     };
 
-    console.log('params', params);
-
-    try {
-      const result = await alipay.exec('alipay.trade.page.pay', {
-        return_url: payAliH5Url,
-        notify_url: payAliNotifyUrl,
-        bizContent: params,
-      });
-    } catch (error) {
-      console.error('支付宝支付失败', error);
-    }
-    const result = await alipay.exec('alipay.trade.page.pay', {
+    const result = await alipay.exec('alipay.trade.precreate', {
       return_url: payAliH5Url,
       notify_url: payAliNotifyUrl,
       bizContent: params,
     });
 
-    console.log('result: ', result);
+    if (result.code != 10000) throw new HttpException(result.msg, HttpStatus.BAD_REQUEST);
 
-    return result;
+    return { url_qrcode: result.qrCode, isRedirect: false };
   }
 
   /* 虎皮椒支付通知 */

@@ -167,6 +167,7 @@ export class GlobalConfigService implements OnModuleInit {
       'payEpayApiPayUrl',
       'payEpayStatus',
       'payHupiStatus',
+      'payAliStatus',
       'payWechatStatus',
       'payMpayStatus',
       'isAutoOpenNotice',
