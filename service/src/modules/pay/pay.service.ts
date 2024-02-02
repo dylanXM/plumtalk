@@ -36,9 +36,6 @@ export class PayService {
 
   /* 支付通知 */
   async notify(params: object) {
-    if (params['param'] == 'ali') {
-      return this.notifyAli(params);
-    }
     if (params['param'] == 'epay') {
       return this.notifyEpay(params);
     }
@@ -48,7 +45,11 @@ export class PayService {
     if (typeof params['resource'] == 'object') {
       return this.notifyWeChat(params);
     }
-    return this.notifyMpay(params);
+    if (params['param'] == 'Mpay') {
+      return this.notifyMpay(params);
+    }
+
+    return this.notifyAli(params);
   }
 
   /* 分平台支付请求 */
