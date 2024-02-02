@@ -24,6 +24,15 @@ const routes: RouteRecordRaw = {
       },
     },
     {
+      path: 'ali',
+      name: 'AliConfig',
+      component: () => import('@/views/pay/alipay.vue'),
+      meta: {
+        title: '支付宝支付',
+        icon: 'menu-alipay',
+      },
+    },
+    {
       path: 'epay',
       name: 'EpayConfig',
       component: () => import('@/views/pay/epay.vue'),
