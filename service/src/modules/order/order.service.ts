@@ -31,11 +31,13 @@ export class OrderService {
     try {
       const { goodsId, count = 1, payType } = params;
       const { id: userId } = req.user;
-      if(userId > 1000000){
-        throw new HttpException('请先注册账号后购买商品！', HttpStatus.UNAUTHORIZED)
+      if (userId > 1000000) {
+        throw new HttpException('请先注册账号后购买商品！', HttpStatus.UNAUTHORIZED);
       }
       const order = await this.create(userId, goodsId, count, payType);
+      console.log('order: ', order);
       const res = await this.payService.pay(userId, order.orderId, payType);
+      console.log('res: ', res);
       return {
         ...res,
         orderId: order.orderId,
@@ -43,10 +45,10 @@ export class OrderService {
         total: order.total,
       };
     } catch (error) {
-      if( error.status === 401){
-        throw new HttpException(error.message, HttpStatus.UNAUTHORIZED)
+      if (error.status === 401) {
+        throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
       }
-      
+
       throw new HttpException(error.message || '购买失败!', HttpStatus.BAD_REQUEST);
     }
   }
@@ -105,9 +107,9 @@ export class OrderService {
     });
 
     const totalPrice = await this.orderEntity
-      .createQueryBuilder("order")
-      .where("order.status = :status", { status: 1 })
-      .select("SUM(order.price)", "total_price")
+      .createQueryBuilder('order')
+      .where('order.status = :status', { status: 1 })
+      .select('SUM(order.price)', 'total_price')
       .getRawOne();
 
     return { rows, count, ...totalPrice };
@@ -124,7 +126,7 @@ export class OrderService {
   }
 
   /* 删除未支付订单 */
-  async deleteNotPay(){
+  async deleteNotPay() {
     return await this.orderEntity.delete({ status: 0 });
   }
 }

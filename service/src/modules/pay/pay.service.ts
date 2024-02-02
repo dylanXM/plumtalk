@@ -25,13 +25,20 @@ export class PayService {
 
   private WxPay;
 
+  private AliPay;
+
   async onModuleInit() {
     const wpay = await importDynamic('wechatpay-node-v3');
     this.WxPay = wpay?.default ? wpay.default : wpay;
+    const alipay = await importDynamic('alipay-sdk');
+    this.AliPay = alipay?.default ? alipay.default : alipay;
   }
 
   /* 支付通知 */
   async notify(params: object) {
+    if (params['param'] == 'ali') {
+      return this.notifyAli(params);
+    }
     if (params['param'] == 'epay') {
       return this.notifyEpay(params);
     }
@@ -54,6 +61,9 @@ export class PayService {
     if (!goods) throw new HttpException('套餐不存在!', HttpStatus.BAD_REQUEST);
     console.log('本次支付类型: ', order.payPlatform);
     try {
+      if (order.payPlatform == 'ali') {
+        return this.payAli(userId, orderId, payType);
+      }
       if (order.payPlatform == 'wechat') {
         return this.payWeChat(userId, orderId, payType);
       }
@@ -77,6 +87,79 @@ export class PayService {
     const order = await this.orderEntity.findOne({ where: { orderId } });
     if (!order) throw new HttpException('订单不存在!', HttpStatus.BAD_REQUEST);
     return order;
+  }
+
+  /** 支付宝支付结果通知 */
+  async notifyAli(params: object) {
+    console.log('支付宝支付 params: ', params);
+    const { payAliMchId, payAliMchKey, payAliMchSecret } = await this.globalConfigService.getConfigs([
+      'payAliMchId',
+      'payAliMchKey',
+      'payAliMchSecret',
+    ]);
+    const alipaySdk = (await importDynamic('alipay-sdk'))?.default;
+
+    if (!alipaySdk) {
+      throw new HttpException('支付宝SDK加载失败', HttpStatus.BAD_REQUEST);
+    }
+
+    const alipay = new alipaySdk({
+      appId: payAliMchId,
+      privateKey: payAliMchSecret,
+      alipayPublicKey: payAliMchKey,
+      signType: 'RSA2',
+      // gateway: 'https://openapi.alipay.com/gateway.do',
+    });
+  }
+
+  /** 支付宝支付 */
+  async payAli(userId: number, orderId: string, payType = 'alipay') {
+    const order = await this.orderEntity.findOne({ where: { userId, orderId } });
+    if (!order) throw new HttpException('订单不存在!', HttpStatus.BAD_REQUEST);
+    const goods = await this.cramiPackageEntity.findOne({ where: { id: order.goodsId } });
+    if (!goods) throw new HttpException('套餐不存在!', HttpStatus.BAD_REQUEST);
+    const { payAliMchId, payAliMchKey, payAliMchSecret, payAliNotifyUrl, payAliH5Url } = await this.globalConfigService.getConfigs([
+      'payAliMchId',
+      'payAliMchKey',
+      'payAliMchSecret',
+      'payAliNotifyUrl',
+      'payAliH5Url',
+    ]);
+
+    const alipay = new this.AliPay({
+      appId: payAliMchId,
+      privateKey: payAliMchSecret,
+      alipayPublicKey: payAliMchKey,
+      signType: 'RSA2',
+      // gateway: 'https://openapi.alipay.com/gateway.do',
+    });
+
+    const params = {
+      subject: goods.name,
+      out_trade_no: orderId,
+      total_amount: order.total,
+    };
+
+    console.log('params', params);
+
+    try {
+      const result = await alipay.exec('alipay.trade.page.pay', {
+        return_url: payAliH5Url,
+        notify_url: payAliNotifyUrl,
+        bizContent: params,
+      });
+    } catch (error) {
+      console.error('支付宝支付失败', error);
+    }
+    const result = await alipay.exec('alipay.trade.page.pay', {
+      return_url: payAliH5Url,
+      notify_url: payAliNotifyUrl,
+      bizContent: params,
+    });
+
+    console.log('result: ', result);
+
+    return result;
   }
 
   /* 虎皮椒支付通知 */
@@ -105,7 +188,7 @@ export class PayService {
       'payHupiSecret',
       'payHupiNotifyUrl',
       'payHupiReturnUrl',
-      'payHupiGatewayUrl'
+      'payHupiGatewayUrl',
     ]);
     const params = {};
     params['version'] = '1.1';
@@ -286,7 +369,6 @@ export class PayService {
     const queryParams = new URLSearchParams(params).toString();
     const apiUrl = `${payMpayApiPayUrl}?${queryParams}`;
     return { url_qrcode: null, redirectUrl: apiUrl, channel: payType, isRedirect: true };
-    const res = await axios.get(payMpayApiPayUrl, { params });
   }
 
   /* 码支付商户信息查询 */

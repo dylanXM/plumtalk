@@ -351,9 +351,13 @@ export class GlobalConfigService implements OnModuleInit {
       payEpayStatus = 0,
       payWechatStatus = 0,
       payMpayStatus = 0,
-    } = await this.getConfigs(['payHupiStatus', 'payEpayStatus', 'payMpayStatus', 'payWechatStatus']);
-    if ([payHupiStatus, payEpayStatus, payWechatStatus, payMpayStatus].every((status) => status === 0)) {
+      payAliStatus = 0,
+    } = await this.getConfigs(['payHupiStatus', 'payEpayStatus', 'payMpayStatus', 'payWechatStatus', 'payAliStatus']);
+    if ([payHupiStatus, payEpayStatus, payWechatStatus, payMpayStatus, payAliStatus].every((status) => status === 0)) {
       throw new HttpException('支付功能暂未开放!', HttpStatus.BAD_REQUEST);
+    }
+    if (Number(payAliStatus) === 1) {
+      return 'ali';
     }
     if (Number(payWechatStatus) === 1) {
       return 'wechat';
