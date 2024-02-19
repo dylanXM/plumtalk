@@ -241,17 +241,16 @@ export const TYPEORIGINLIST = [
   { value: 'NineAI检测', label: 'NineAI检测' },
 ]
 
-
 export const MODELTYPELIST = [
   { value: 1, label: 'OpenAi - [chatGpt]' },
   { value: 2, label: '百度 - [千帆大模型]' },
-  { value: 3, label: '清华 - [智谱大模型]' }
+  { value: 3, label: '清华 - [智谱大模型]' },
 ]
 
 export const MODELSMAP = {
   1: 'OPENAI',
   2: '百度文心',
-  3: '清华智谱'
+  3: '清华智谱',
 }
 
 export const MODELSMAPLIST = {
@@ -265,7 +264,7 @@ export const MODELSMAPLIST = {
     'gpt-4-32k-0613',
     'gpt-4-1106-preview',
     'gpt-4-vision-preview',
-    ],
+  ],
   2: [
     'ERNIE-Bot',
     'ERNIE-Bot',
@@ -278,14 +277,14 @@ export const MODELSMAPLIST = {
     // 'ChatGLM2-6B-32K',
     'Qianfan-BLOOMZ-7B-compressed',
     'Qianfan-Chinese-Llama-2-7B',
-    'AquilaChat-7B'
+    'AquilaChat-7B',
   ],
   3: [
     'chatglm_pro',
     'chatglm_std',
     'chatglm_lite',
-    'chatglm_lite_32k'
-  ]
+    'chatglm_lite_32k',
+  ],
 }
 
 /* 扣费类型  普通余额还是高级余额 */
@@ -294,10 +293,9 @@ export const DEDUCTTYPELIST = [
   { value: 2, label: '高级余额' },
 ]
 
-
 /* 不同模型在填入key字段的时候 key代表的含义不同 */
 export const ModelTypeLabelMap = {
   1: 'APIKey',
   2: 'client_id',
-  3: 'AppKey'
+  3: 'AppKey',
 }
