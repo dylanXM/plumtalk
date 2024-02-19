@@ -13,8 +13,8 @@ interface SendMessageResult {
 
 function getFullUrl(proxyUrl) {
   const processedUrl = proxyUrl.endsWith('/') ? proxyUrl.slice(0, -1) : proxyUrl;
-  const baseUrl = processedUrl || 'https://api.openai.com';
-  return `${baseUrl}/v1/chat/completions`;
+  const baseUrl = processedUrl || 'https://api.openai.com/v1';
+  return `${baseUrl}/chat/completions`;
 }
 
 export function sendMessageFromOpenAi(messagesHistory, inputs) {
