@@ -20,7 +20,7 @@ const useGlobal = useGlobalStore()
 const POLL_INTERVAL = 1000
 const ms = useMessage()
 const active = ref(true)
-const payType = ref('wxpay')
+const payType = ref('ali')
 
 interface Props {
   visible: boolean
@@ -34,7 +34,8 @@ const isWxEnv = computed(() => {
 
 /* 开启的支付平台 */
 const payPlatform = computed(() => {
-  const { payHupiStatus, payEpayStatus, payMpayStatus, payWechatStatus } = authStore.globalConfig
+  const { payHupiStatus, payEpayStatus, payMpayStatus, payWechatStatus, payAliStatus } = authStore.globalConfig
+  console.log('payHupiStatus', payHupiStatus, payEpayStatus, payMpayStatus, payWechatStatus, payAliStatus)
   if (Number(payWechatStatus) === 1)
     return 'wechat'
 
@@ -46,6 +47,9 @@ const payPlatform = computed(() => {
 
   if (Number(payHupiStatus) === 1)
     return 'hupi'
+
+  if (Number(payAliStatus) === 1)
+    return 'ali'
 
   return null
 })
@@ -61,6 +65,9 @@ const payChannel = computed(() => {
 
   if (payPlatform.value === 'wechat')
     return ['wxpay']
+
+  if (payPlatform.value === 'ali')
+    return ['ali']
 
   if (payPlatform.value === 'hupi')
     return ['wxpay']
@@ -129,13 +136,11 @@ async function getQrCode() {
   if (payPlatform.value === 'wechat')
     qsPayType = isWxEnv.value ? 'jsapi' : 'native'
 
-
   try {
     const res: ResData = await fetchOrderBuyAPI({ goodsId: orderInfo.value.pkgInfo.id, payType: qsPayType })
     const { data, success, message } = res
-    if (!success){
-			return ms.error(message)
-		}
+    if (!success)
+      return ms.error(message)
 
     const { url_qrcode: code, orderId: id, redirectUrl: url } = data
     redirectUrl.value = url
@@ -145,7 +150,7 @@ async function getQrCode() {
     redirectloading.value = false
   }
   catch (error) {
-		useGlobal.updatePayDialog(false)
+    useGlobal.updatePayDialog(false)
     qrCodeloading.value = false
     redirectloading.value = false
   }
@@ -169,6 +174,8 @@ function handleFinish() {
   useGlobal.updatePayDialog(false)
   // useGlobal.updateGoodsDialog(true)
 }
+
+console.log('payPlatform', payPlatform.value)
 </script>
 
 <template>
@@ -240,6 +247,9 @@ function handleFinish() {
 
               <!-- hupi -->
               <iframe v-if="payPlatform === 'hupi' && !redirectloading" class="w-[280px] h-[280px] scale-90" :src="url_qrcode" frameborder="0" />
+
+              <!-- ali -->
+              <QRCode v-if="payPlatform === 'ali' && !qrCodeloading" :value="url_qrcode" :size="240" />
             </div>
             <span v-if="!isRedirectPay" class="flex items-center justify-center text-lg ">
               {{ `打开${plat}扫码支付` }}

@@ -57,6 +57,8 @@ export const useAuthStore = defineStore('auth-store', {
 
     async getglobalConfig(domain = '') {
       const res = await fetchQueryConfigAPI({ domain })
+
+      console.log('res', res)
       this.globalConfig = res.data
       this.globalConfigLoading = false
       this.loadInit = true

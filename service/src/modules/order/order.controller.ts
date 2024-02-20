@@ -49,11 +49,11 @@ export class OrderController {
     return this.orderService.deleteOrder(body);
   }
 
-   /* 删除订单 */
-   @Post('deleteNotPay')
-   @ApiOperation({ summary: '删除未支付订单' })
-   @UseGuards(SuperAuthGuard)
-   async deleteNotPay() {
-     return this.orderService.deleteNotPay();
-   }
+  /* 删除订单 */
+  @Post('deleteNotPay')
+  @ApiOperation({ summary: '删除未支付订单' })
+  @UseGuards(SuperAuthGuard)
+  async deleteNotPay() {
+    return this.orderService.deleteNotPay();
+  }
 }

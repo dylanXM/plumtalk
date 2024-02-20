@@ -87,15 +87,14 @@ defineExpose({ textRef })
 </script>
 
 <template>
-  <div :class="wrapClass" class="w-full">
+  <div class="w-full">
     <div ref="textRef" class="leading-relaxed break-words">
       <div v-if="!inversion" class="flex flex-col items-start">
-        <div class="w-full">
+        <div :class="wrapClass" class="w-full">
           <div v-if="!asRawText" class="w-full markdown-body" :class="[{ 'markdown-body-generate': loading }]" v-html="text" />
           <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
-          <!-- <span v-if="loading" class="dark:text-white w-[4px] h-[20px] block animate-blink" /> -->
         </div>
-        <div class="mt-3">
+        <div class="mt-1">
           <NButton class="ml-2" text type="primary" @click="handleCopy">
             <template #icon>
               <NIcon :size="10" :component="Copy" />
@@ -129,7 +128,7 @@ defineExpose({ textRef })
         </div>
       </div>
       <div v-else>
-        <div class="whitespace-pre-wrap" v-text="text" />
+        <div :class="wrapClass" class="whitespace-pre-wrap" v-text="text" />
         <div v-if="false" class="mt-1">
           <NButton class="ml-2" text color="#FFF" @click="handleCopy">
             <template #icon>

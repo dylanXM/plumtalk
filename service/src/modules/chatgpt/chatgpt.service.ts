@@ -496,20 +496,20 @@ export class ChatgptService implements OnModuleInit {
         return response.text;
       }
     } catch (error) {
-      console.log('chat-error <----------------------------------------->', modelKey, error);
+      // console.log('chat-error <----------------------------------------->', modelKey, error);
       const code = error?.statusCode || 400;
       const status = error?.response?.status || error?.statusCode || 400;
-      console.log(
-        'chat-error-detail  <----------------------------------------->',
-        'code: ',
-        code,
-        'message',
-        error?.message,
-        'statusText:',
-        error?.response?.statusText,
-        'status',
-        error?.response?.status,
-      );
+      // console.log(
+      //   'chat-error-detail  <----------------------------------------->',
+      //   'code: ',
+      //   code,
+      //   'message',
+      //   error?.message,
+      //   'statusText:',
+      //   error?.response?.statusText,
+      //   'status',
+      //   error?.response?.status,
+      // );
       if (error.status && error.status === 402) {
         const errMsg = { message: `Catch Error ${error.message}`, code: 402 };
         if (res) {
