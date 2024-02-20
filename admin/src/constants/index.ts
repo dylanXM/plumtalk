@@ -280,6 +280,8 @@ export const MODELSMAPLIST = {
     'AquilaChat-7B',
   ],
   3: [
+    'glm-4',
+    'glm-3-turbo',
     'chatglm_pro',
     'chatglm_std',
     'chatglm_lite',
