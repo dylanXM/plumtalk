@@ -556,7 +556,7 @@ export class ChatgptService implements OnModuleInit {
       }
 
       if (code === 400) {
-        console.log('400 error', error, error.message);
+        console.log('400 error', error.message);
       }
 
       /* 防止因为key的原因直接导致客户端以为token过期退出  401只给用于鉴权token中 */
