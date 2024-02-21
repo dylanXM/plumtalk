@@ -111,3 +111,21 @@ export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, m
       });
   });
 }
+
+export async function sendMessageFromZhipuV2(messagesHistory, { key, model, temperature = 0.95 }) {
+  const token = await generateToken(key);
+  const url = `https://open.bigmodel.cn/api/paas/v3/model-api/${model}/invoke`;
+  const options = {
+    method: 'POST',
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    data: {
+      prompt: messagesHistory,
+      temperature,
+    },
+  };
+  return axios(options);
+}

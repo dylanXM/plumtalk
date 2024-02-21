@@ -375,6 +375,25 @@ export class ChatgptService implements OnModuleInit {
           isSuccess = true;
         }
 
+        if (Number(keyType) === 4) {
+          let firstChunk = true;
+          const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
+            parentMessageId,
+            maxRounds: addOneIfOdd(rounds),
+          });
+          response = await sendMessageFromZhipu(usingNetwork ? netWorkPrompt : messagesHistory, {
+            temperature,
+            key,
+            model,
+            onProgress: (data) => {
+              res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
+              firstChunk = false;
+              lastChat = data;
+            },
+          });
+          isSuccess = true;
+        }
+
         /* 分别将本次用户输入的 和 机器人返回的分两次存入到 store */
         const userMessageData: MessageInfo = {
           id: this.nineStore.getUuid(),

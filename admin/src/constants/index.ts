@@ -245,12 +245,14 @@ export const MODELTYPELIST = [
   { value: 1, label: 'OpenAi - [chatGpt]' },
   { value: 2, label: '百度 - [千帆大模型]' },
   { value: 3, label: '清华 - [智谱大模型]' },
+  { value: 4, label: '系统模型' },
 ]
 
 export const MODELSMAP = {
   1: 'OPENAI',
   2: '百度文心',
   3: '清华智谱',
+  4: '系统模型',
 }
 
 export const MODELSMAPLIST = {
@@ -280,12 +282,14 @@ export const MODELSMAPLIST = {
     'AquilaChat-7B',
   ],
   3: [
-    'glm-4',
-    'glm-3-turbo',
     'chatglm_pro',
     'chatglm_std',
     'chatglm_lite',
     'chatglm_lite_32k',
+  ],
+  4: [
+    'glm-4',
+    'glm-3-turbo',
   ],
 }
 
@@ -300,4 +304,5 @@ export const ModelTypeLabelMap = {
   1: 'APIKey',
   2: 'client_id',
   3: 'AppKey',
+  4: 'AppKey',
 }
