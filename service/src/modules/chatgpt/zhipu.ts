@@ -44,6 +44,7 @@ export function compilerMetaJsonStr(data): any {
 
 /* 格式化信息并且输出为和百度一样的格式  前端不用变动了 */
 export function compilerStream(streamArr) {
+  console.log(streamArr, typeof streamArr);
   if (streamArr.length === 3) {
     return {
       event: streamArr[0].replace('event:', ''),
@@ -61,6 +62,71 @@ export function compilerStream(streamArr) {
       usage: compilerMetaJsonStr(streamArr[3].replace('meta:', ''))?.usage,
     };
   }
+}
+
+/* 格式化信息并且输出为和百度一样的格式  前端不用变动了 */
+let lastStream = '';
+export function compilerStreamV2(streamArr){
+  const generateRes = (str) => {
+    if (str === '[DONE]') {
+      return;
+    }
+    const parseData = JSON.parse(str);
+    const { id, choices, usage } = parseData;
+    const choice = choices?.[0];
+    const { finish_reason, delta } = choice;
+    if (finish_reason === 'stop') {
+      return {
+        id,
+        result: '',
+        is_end: true,
+        event: 'finish',
+        usage,
+      }
+    }
+    const result = delta?.content;
+    return {
+      id,
+      result,
+      is_end: false,
+      event: 'add',
+    }
+  }
+
+  const res = [];
+  for (let i = 0; i < streamArr.length; i++) {
+    const stream = streamArr[i];
+    if (stream.startsWith('data: ') && stream.endsWith('}}]}')) {
+      const data = stream.replace('data: ', '').trim();
+      const singleRes = generateRes(data);
+      if (singleRes) {
+        res.push(singleRes);
+      }
+    }
+
+    if (stream.startsWith('data: ') && (stream.endsWith('}}')) || stream.endsWith('}}]')) {
+      const data = stream.replace('data: ', '').trim();
+      const singleRes = generateRes(data);
+      if (singleRes) {
+        res.push(singleRes);
+      }
+    }
+
+    if (stream.startsWith('data: ') && !stream.endsWith('}}]}')) {
+      lastStream = stream;
+    }
+
+    if (!stream.startsWith('data: ') && stream.endsWith('}}]}')) {
+      const data = (lastStream + stream).replace('data: ', '').trim();
+      lastStream = '';
+      const singleRes = generateRes(data);
+      if (singleRes) {
+        res.push(singleRes);
+      }
+    }
+  }
+
+  return res;
 }
 
 export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, model, temperature = 0.95 }) {
@@ -92,7 +158,7 @@ export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, m
             .filter((line) => line.trim() !== '');
           const parseData = compilerStream(stramArr);
           if (!parseData) return;
-          const { id, result, is_end } = parseData;
+          const { result, is_end } = parseData;
           result && (cacheResText += result.trim());
           if (is_end) {
             parseData.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
@@ -107,25 +173,62 @@ export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, m
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        console.error('error: ', error);
       });
   });
 }
 
-export async function sendMessageFromZhipuV2(messagesHistory, { key, model, temperature = 0.95 }) {
+export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key, model, temperature = 0.95 }) {
   const token = await generateToken(key);
-  const url = `https://open.bigmodel.cn/api/paas/v3/model-api/${model}/invoke`;
-  const options = {
-    method: 'POST',
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-    data: {
-      prompt: messagesHistory,
-      temperature,
-    },
-  };
-  return axios(options);
+  return new Promise((resolve, reject) => {
+    const url = `https://open.bigmodel.cn/api/paas/v4/chat/completions`;
+    const options = {
+      method: 'POST',
+      url,
+      responseType: 'stream',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      data: {
+        model,
+        messages: messagesHistory,
+        temperature,
+        stream: true
+      },
+    };
+    axios(options)
+        .then((response) => {
+          const stream = response.data;
+          let resData;
+          let cacheResText = '';
+          stream.on('data', (chunk) => {
+            const stramArr = chunk
+                .toString()
+                .split('\n')
+                .filter((line) => line.trim() !== '');
+
+            const parseData = compilerStreamV2(stramArr);
+            if (!parseData?.length) return;
+            parseData.forEach((item) => {
+                if (!item) return;
+                const { result, is_end } = item;
+                result && (cacheResText += result.trim());
+                if (is_end) {
+                    item.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
+                    resData = item;
+                    resData.text = cacheResText;
+                }
+                onProgress(item);
+            });
+          });
+          stream.on('end', () => {
+            resolve(resData);
+            cacheResText = '';
+          });
+        })
+        .catch((error) => {
+          console.error('error: ', error);
+        });
+  });
 }

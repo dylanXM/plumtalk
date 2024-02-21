@@ -37,7 +37,7 @@ import { ModelsService } from '../models/models.service';
 import { sendMessageFromBaidu } from './baidu';
 import { addOneIfOdd, unifiedFormattingResponse } from './helper';
 import { MessageInfo, NineStore, NineStoreInterface } from './store';
-import { sendMessageFromZhipu } from './zhipu';
+import {sendMessageFromZhipu, sendMessageFromZhipuV2} from './zhipu';
 import { getTokenCount, sendMessageFromOpenAi } from './openai';
 import { ChatBoxTypeEntity } from './chatBoxType.entity';
 import { ChatBoxEntity } from './chatBox.entity';
@@ -381,7 +381,7 @@ export class ChatgptService implements OnModuleInit {
             parentMessageId,
             maxRounds: addOneIfOdd(rounds),
           });
-          response = await sendMessageFromZhipu(usingNetwork ? netWorkPrompt : messagesHistory, {
+          response = await sendMessageFromZhipuV2(usingNetwork ? netWorkPrompt : messagesHistory, {
             temperature,
             key,
             model,
@@ -391,6 +391,7 @@ export class ChatgptService implements OnModuleInit {
               lastChat = data;
             },
           });
+          console.log('response: ', response);
           isSuccess = true;
         }
 
@@ -575,7 +576,7 @@ export class ChatgptService implements OnModuleInit {
       }
 
       if (code === 400) {
-        console.log('400 error', error.message);
+        console.log('400 error', error);
       }
 
       /* 防止因为key的原因直接导致客户端以为token过期退出  401只给用于鉴权token中 */
