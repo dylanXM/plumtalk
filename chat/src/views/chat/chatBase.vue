@@ -325,7 +325,7 @@ async function onConversation(msg?: string) {
           }
 
           /* 处理和百度一样格式的模型消息解析 */
-          if ([2, 3].includes(activeModelKeyType.value)) {
+          if ([2, 3, 4].includes(activeModelKeyType.value)) {
             const lines = responseText
               .toString()
               .split('\n')
@@ -355,7 +355,7 @@ async function onConversation(msg?: string) {
                 userBanance = data?.userBanance
             }
 
-            if ([2, 3].includes(activeModelKeyType.value)) {
+            if ([2, 3, 4].includes(activeModelKeyType.value)) {
               const { result, is_end } = data
               cacheResText = result
               isStreamIn.value = !is_end

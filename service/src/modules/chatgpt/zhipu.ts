@@ -96,24 +96,41 @@ export function compilerStreamV2(streamArr){
   const res = [];
   for (let i = 0; i < streamArr.length; i++) {
     const stream = streamArr[i];
-    if (stream.startsWith('data: ') && stream.endsWith('}}]}')) {
+    if (i + 1 === streamArr.length - 1 && streamArr[i + 1] === 'data: [DONE]') {
       const data = stream.replace('data: ', '').trim();
       const singleRes = generateRes(data);
       if (singleRes) {
         res.push(singleRes);
       }
+      continue;
     }
 
-    if (stream.startsWith('data: ') && (stream.endsWith('}}')) || stream.endsWith('}}]')) {
+    if (lastStream.startsWith('data: {') && lastStream.endsWith('}}]}')) {
+      const data = lastStream.replace('data: ', '').trim();
+      const singleRes = generateRes(data);
+      if (singleRes) {
+        res.push(singleRes);
+      }
+      continue;
+    }
+
+    if (stream.startsWith('data: {') && stream.endsWith('}}]}')) {
       const data = stream.replace('data: ', '').trim();
       const singleRes = generateRes(data);
       if (singleRes) {
         res.push(singleRes);
       }
+      continue;
+    }
+
+    if (['d', 'da', 'dat', 'data', 'data:', 'data: '].includes(stream)) {
+      lastStream = stream;
+      continue;
     }
 
     if (stream.startsWith('data: ') && !stream.endsWith('}}]}')) {
       lastStream = stream;
+      continue;
     }
 
     if (!stream.startsWith('data: ') && stream.endsWith('}}]}')) {
@@ -194,7 +211,15 @@ export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key,
         model,
         messages: messagesHistory,
         temperature,
-        stream: true
+        stream: true,
+        tools: [
+          {
+            type: 'web_search',
+            web_search: {
+              enable: true,
+            }
+          }
+        ],
       },
     };
     axios(options)

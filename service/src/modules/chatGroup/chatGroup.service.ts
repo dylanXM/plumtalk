@@ -25,6 +25,7 @@ export class ChatGroupService {
     const params = { title: '新对话', userId: id };
     if (appId) {
       const appInfo = await this.appEntity.findOne({ where: { id: appId } });
+      console.log('appInfo', appInfo);
       if (!appInfo) {
         throw new HttpException('非法操作、您在使用一个不存在的应用！', HttpStatus.BAD_REQUEST);
       } else {
@@ -61,7 +62,7 @@ export class ChatGroupService {
       })
     } catch (error) {
       console.log('error: ', error);
-      
+
     }
   }
 

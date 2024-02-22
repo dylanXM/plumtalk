@@ -41,7 +41,7 @@ export function unifiedFormattingResponse(keyType, response, others){
   }
 
   /* 百度 */
-  if([2, 3].includes(Number(keyType))) {
+  if([2, 3, 4].includes(Number(keyType))) {
     const { usage, text } = response
     const { prompt_tokens, completion_tokens, total_tokens } = usage
     const { model, parentMessageId } = others

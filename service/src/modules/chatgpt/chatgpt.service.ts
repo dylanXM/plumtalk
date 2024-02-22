@@ -377,9 +377,11 @@ export class ChatgptService implements OnModuleInit {
 
         if (Number(keyType) === 4) {
           let firstChunk = true;
+          const { parentMessageId, completionParams, systemMessage } = mergedOptions;
           const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
             parentMessageId,
             maxRounds: addOneIfOdd(rounds),
+            systemMessage,
           });
           response = await sendMessageFromZhipuV2(usingNetwork ? netWorkPrompt : messagesHistory, {
             temperature,
@@ -391,7 +393,6 @@ export class ChatgptService implements OnModuleInit {
               lastChat = data;
             },
           });
-          console.log('response: ', response);
           isSuccess = true;
         }
 

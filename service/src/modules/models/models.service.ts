@@ -91,7 +91,7 @@ export class ModelsService {
   async getBaseConfig(appId?: number): Promise<any> {
     if (!this.modelTypes.length || !Object.keys(this.modelMaps).length) return;
     /* 有appid只可以使用openai 的 模型 */
-    const modelTypeInfo = appId ? this.modelTypes.find((item) => Number(item.val) === 1) : this.modelTypes[0];
+    const modelTypeInfo = appId ? this.modelTypes.find((item) => [1, 4].includes(Number(item.val))) : this.modelTypes[0];
     // TODO 第0个会有问题  先添加的4默认就是模型4了  后面优化下
     if (!modelTypeInfo) return;
     const { keyType, modelName, model, maxModelTokens, maxResponseTokens, deductType, deduct, maxRounds } = this.modelMaps[modelTypeInfo.val][0]; // 取到第一个默认的配置项信息

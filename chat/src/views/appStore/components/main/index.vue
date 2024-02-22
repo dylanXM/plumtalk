@@ -84,7 +84,7 @@ async function handleCollect(app: App) {
 async function handleRunApp(app: App) {
 	const res: any = await fetchQueryModelsListAPI()
 	const { modelMaps } = res.data
-	if(!modelMaps[1]){
+	if(!modelMaps[1] && !modelMaps[4]){
 		return ms.warning('管理员未配置特定应用模型、请联系管理员配置~')
 	}
 	router.push({ path: '/chat', query: { appId: app.id } })
