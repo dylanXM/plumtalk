@@ -195,7 +195,7 @@ export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, m
   });
 }
 
-export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key, model, temperature = 0.95 }) {
+export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key, model, temperature = 0.95, prompt }) {
   const token = await generateToken(key);
   return new Promise((resolve, reject) => {
     const url = `https://open.bigmodel.cn/api/paas/v4/chat/completions`;
@@ -217,6 +217,7 @@ export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key,
             type: 'web_search',
             web_search: {
               enable: true,
+              search_query: prompt
             }
           }
         ],

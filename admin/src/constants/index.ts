@@ -289,6 +289,7 @@ export const MODELSMAPLIST = {
   ],
   4: [
     'glm-4',
+    'glm-4v',
     'glm-3-turbo',
   ],
 }

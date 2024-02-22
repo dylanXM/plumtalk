@@ -387,6 +387,7 @@ export class ChatgptService implements OnModuleInit {
             temperature,
             key,
             model,
+            prompt,
             onProgress: (data) => {
               res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
               firstChunk = false;
