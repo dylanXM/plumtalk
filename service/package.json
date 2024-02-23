@@ -88,7 +88,8 @@
     "swagger-ui-express": "^4.6.2",
     "typeorm": "^0.3.12",
     "uuid": "^9.0.0",
-    "wechatpay-node-v3": "^2.1.5"
+    "wechatpay-node-v3": "^2.1.5",
+    "zhipuai-sdk-nodejs-v4": "^0.1.10"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

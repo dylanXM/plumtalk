@@ -65,7 +65,7 @@ export class ChatgptController {
     /* 临时方案 指定其系统预设词 */
     body.systemMessage =
       mindCustomPrompt ||
-      `我希望你使用markdown格式回答我得问题、我的需求是得到一份markdown格式的大纲、尽量做的精细、层级多一点、不管我问你什么、都需要您回复我一个大纲出来、我想使用大纲做思维导图、除了大纲之外、不要无关内容和总结。`;
+      `我希望你使用markdown格式回答我得问题、我的需求是得到一份markdown格式的大纲、尽量做的精细、层级多一点，每个层级之间包含两个换行符、不管我问你什么、都需要您回复我一个大纲出来、我想使用大纲来生成思维导图、除了大纲之外、不要任何其它内容。`;
     return this.chatgptService.chatProcess({ ...body, cusromPrompt: true }, req, res);
   }
 
