@@ -1,6 +1,6 @@
 <route lang="yaml">
 meta:
-  title: Dall-E绘画管理
+  title: 绘画管理
 </route>
 
 <script lang="ts" setup>

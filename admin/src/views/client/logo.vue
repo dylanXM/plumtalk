@@ -11,7 +11,7 @@ import apiConfig from '@/api/modules/config'
 
 const menulist = [
   { label: 'ChatGpt聊天', path: 'Chat' },
-  { label: 'Dall-E绘画', path: 'Draw' },
+  { label: '系统绘画', path: 'Draw' },
   { label: 'Midjourney绘画', path: 'Midjourney' },
   { label: 'Midjourney广场', path: 'Market' },
   { label: 'mind思维导图', path: 'Mind' },
@@ -22,7 +22,7 @@ const menulist = [
 
 const homePagePath = [
   { label: 'ChatGpt聊天', path: '/chat' },
-  { label: 'Dall-E绘画', path: '/draw' },
+  { label: '系统绘画', path: '/draw' },
   { label: 'Midjourney绘画', path: '/midjourney' },
   { label: 'mj公共预览页', path: '/market' },
   { label: 'mind思维导图', path: '/mind' },

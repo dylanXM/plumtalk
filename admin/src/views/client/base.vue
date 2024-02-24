@@ -8,9 +8,10 @@ import { onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import apiConfig from '@/api/modules/config'
+
 const homePagePath = [
   { label: 'ChatGpt聊天', path: '/chat' },
-  { label: 'Dall-E绘画', path: '/draw' },
+  { label: '系统绘画', path: '/draw' },
   { label: 'Midjourney绘画', path: '/midjourney' },
   { label: 'mj公共预览页', path: '/market' },
   { label: 'mind思维导图', path: '/mind' },
@@ -30,7 +31,7 @@ const formInline = reactive({
   isShowAppCatIcon: '',
   clientFavoIconPath: '',
   clientLogoPath: '',
-  clientHomePath: ''
+  clientHomePath: '',
 })
 const rules = ref<FormRules>({
   siteName: [
@@ -40,7 +41,7 @@ const rules = ref<FormRules>({
 const formRef = ref<FormInstance>()
 
 async function queryAllconfig() {
-  const res = await apiConfig.queryConfig({ keys: ['siteName', 'qqNumber', 'vxNumber', 'robotAvatar', 'userDefautlAvatar', 'buyCramiAddress', 'filingNumber', 'companyName', 'siteRobotName', 'isShowAppCatIcon', 'clientLogoPath','clientFavoIconPath','clientHomePath'] })
+  const res = await apiConfig.queryConfig({ keys: ['siteName', 'qqNumber', 'vxNumber', 'robotAvatar', 'userDefautlAvatar', 'buyCramiAddress', 'filingNumber', 'companyName', 'siteRobotName', 'isShowAppCatIcon', 'clientLogoPath', 'clientFavoIconPath', 'clientHomePath'] })
   Object.assign(formInline, res.data)
 }
 

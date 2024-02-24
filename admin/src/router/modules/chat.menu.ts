@@ -28,7 +28,7 @@ const routes: RouteRecordRaw = {
       name: 'drawMenuList',
       component: () => import('@/views/chat/draw.vue'),
       meta: {
-        title: 'Dall-E绘画管理',
+        title: '绘画管理',
         icon: 'menu-draw',
       },
     },

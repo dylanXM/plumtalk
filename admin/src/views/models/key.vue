@@ -9,7 +9,7 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import ApiModels from '@/api/modules/models'
 import { utcToShanghaiTime } from '@/utils/utcformatTime'
 
-import { MODEL_LIST, ModelTypeLabelMap, QUESTION_STATUS_OPTIONS, MODELTYPELIST, MODELSMAP, DEDUCTTYPELIST, MODELSMAPLIST } from '@/constants/index'
+import { DEDUCTTYPELIST, MODELSMAP, MODELSMAPLIST, MODELTYPELIST, MODEL_LIST, ModelTypeLabelMap, QUESTION_STATUS_OPTIONS } from '@/constants/index'
 
 const formBlukRef = ref<FormInstance>()
 const formRef = ref<FormInstance>()
@@ -18,8 +18,6 @@ const visible = ref(false)
 const loading = ref(false)
 const modelLoading = ref(false)
 const bulkVisible = ref(false)
-
-
 
 const formInline = reactive({
   keyType: '',
@@ -46,7 +44,7 @@ const formPackage = reactive({
   timeout: 300,
   deduct: 1,
   deductType: 1,
-  maxRounds: 12
+  maxRounds: 12,
 })
 
 const rules = reactive<FormRules>({
@@ -55,7 +53,7 @@ const rules = reactive<FormRules>({
   key: [{ required: true, message: '请填写您的调用模型key', trigger: 'blur' }],
   secret: [{ required: true, message: '请填写您的调用模型的secret', trigger: 'blur' }],
   status: [{ required: true, message: '请选择key的启用状态', trigger: 'change' }],
-  isDraw: [{ required: true, message: '请选择当前key是否作为基础绘画key', trigger: 'change' }],
+  isDraw: [{ required: true, message: '请选择当前key是否作为系统绘画key', trigger: 'change' }],
   model: [{ required: true, message: '请选择当前key需要绑定的模型', trigger: 'change' }],
   keyWeight: [{ required: true, message: '请填写key的权重值', trigger: 'blur' }],
   maxModelTokens: [{ required: true, message: '请填写模型最大token数', trigger: 'blur' }],
@@ -78,7 +76,7 @@ const dialogTitle = computed(() => {
   return activeModelKeyId.value ? '更新秘钥' : '新增秘钥'
 })
 
-const labelKeyName = computed(() => ModelTypeLabelMap[formPackage.keyType] )
+const labelKeyName = computed(() => ModelTypeLabelMap[formPackage.keyType])
 
 const dialogButton = computed(() => {
   return activeModelKeyId.value ? '确认更新' : '确认新增'
@@ -126,8 +124,8 @@ async function handlerSubmit(formEl: FormInstance | undefined) {
     if (valid) {
       const params: any = JSON.parse(JSON.stringify(formPackage))
       delete params.id
-      activeModelKeyId.value && ( params.id = activeModelKeyId.value )
-      if(Number(formPackage.keyType) === 1){
+      activeModelKeyId.value && (params.id = activeModelKeyId.value)
+      if (Number(formPackage.keyType) === 1) {
         const key = JSON.parse(JSON.stringify(formPackage.key))
         const formatKeyArr = key.split('\n')
         params.key = formatKeyArr
@@ -140,7 +138,6 @@ async function handlerSubmit(formEl: FormInstance | undefined) {
     }
   })
 }
-
 
 onMounted(() => {
   queryModelsList()
@@ -197,7 +194,7 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="modelName" label="模型名称"  width="180"/>
+        <el-table-column prop="modelName" label="模型名称" width="180" />
         <el-table-column prop="status" align="center" label="启用状态" width="90">
           <template #default="scope">
             <el-tag :type="scope.row.status ? 'success' : 'danger'">
@@ -205,9 +202,11 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="key" label="模型KEY"  width="460">
+        <el-table-column prop="key" label="模型KEY" width="460">
           <template #default="scope">
-            <div class="overflow-y-scroll w-full whitespace-nowrap">{{ scope.row.key }}</div>
+            <div class="overflow-y-scroll w-full whitespace-nowrap">
+              {{ scope.row.key }}
+            </div>
           </template>
         </el-table-column>
         <!-- <el-table-column prop="secret" label="模型Secret"  width="340">
@@ -215,8 +214,8 @@ onMounted(() => {
             <div class="overflow-y-scroll w-full whitespace-nowrap">{{ scope.row.secret || '---' }}</div>
           </template>
         </el-table-column> -->
-        <el-table-column prop="keyWeight" label="模型权重"  width="90" align="center"/>
-        <el-table-column prop="model" align="center" label="绑定模型"  width="180">
+        <el-table-column prop="keyWeight" label="模型权重" width="90" align="center" />
+        <el-table-column prop="model" align="center" label="绑定模型" width="180">
           <template #default="scope">
             <el-tag :type="scope.row.model.includes('gpt-4') ? 'success' : ''">
               {{ scope.row.model }}
@@ -246,7 +245,7 @@ onMounted(() => {
           </template>
         </el-table-column>
         <el-table-column prop="useCount" align="center" label="调用次数" width="90" />
-        <el-table-column prop="useToken" align="center" label="已使用Token"  width="120" />
+        <el-table-column prop="useToken" align="center" label="已使用Token" width="120" />
         <el-table-column prop="keyStatus" align="center" label="key状态" width="110">
           <template #default="scope">
             <el-tag :type="scope.row.keyStatus === 1 ? 'success' : 'danger'">
@@ -332,24 +331,26 @@ onMounted(() => {
           <el-switch
             v-model="formPackage.status"
           />
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="right"
-        >
-          <template #content>
-            <div style="width: 250px;">
-              账号启用状态、一旦锁定当前key将停止工作！
-            </div>
-          </template>
-          <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
-        </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <template #content>
+              <div style="width: 250px;">
+                账号启用状态、一旦锁定当前key将停止工作！
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="模型中文名称" prop="modelName">
           <el-input v-model="formPackage.modelName" placeholder="请填写模型中文名称（用户选择的）" />
         </el-form-item>
         <el-form-item :label="labelKeyName" prop="key">
-          <el-input v-model="formPackage.key" :type="Number(formPackage.keyType) === 1 ? 'textarea' : 'text'" :rows="5" placeholder="请填写模型Key|clientId|AppId" style="width: 95%;"/>
+          <el-input v-model="formPackage.key" :type="Number(formPackage.keyType) === 1 ? 'textarea' : 'text'" :rows="5" placeholder="请填写模型Key|clientId|AppId" style="width: 95%;" />
           <el-tooltip
             class="box-item"
             effect="dark"
@@ -360,11 +361,13 @@ onMounted(() => {
                 不同模型的设置不同、例如openai仅设置key即可、如果是百度大模型、则填写clientId以及同时需要填写secret。对于OPENAI模型、我们支持批量导入、如果您需要批量导入key、则一行一个key即可、多个key使用换行隔离、其余配置将共享、多个key可以重复选用默认模型。
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="SecretKey" prop="secret" v-if="[2].includes(Number(formPackage.keyType))">
-          <el-input v-model="formPackage.secret" placeholder="请填写模型调用所需的Secret[部分类型模型需要]"  style="width: 80%;"/>
+        <el-form-item v-if="[2].includes(Number(formPackage.keyType))" label="SecretKey" prop="secret">
+          <el-input v-model="formPackage.secret" placeholder="请填写模型调用所需的Secret[部分类型模型需要]" style="width: 80%;" />
           <el-tooltip
             class="box-item"
             effect="dark"
@@ -375,11 +378,13 @@ onMounted(() => {
                 不同账号填写的内容不同、但是都代表的是Secret秘钥
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="账号关联模型" prop="model">
-          <el-select v-model="formPackage.model" filterable  clearable placeholder="请选用或填写绑定的模型" :allow-create="Number(formPackage.keyType) === 1" style="width: 80%;">
+          <el-select v-model="formPackage.model" filterable clearable placeholder="请选用或填写绑定的模型" :allow-create="Number(formPackage.keyType) === 1" style="width: 80%;">
             <el-option
               v-for="item in modelList"
               :key="item"
@@ -387,18 +392,20 @@ onMounted(() => {
               :value="item"
             />
           </el-select>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="right"
-        >
-          <template #content>
-            <div style="width: 250px;">
-              给定了部分可选的模型列表、你可以可以手动填写您需要调用的模型、请确保填写的模型是当前key支持的类型、否则可能会在调用中出现不可预知错误！
-            </div>
-          </template>
-          <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
-        </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <template #content>
+              <div style="width: 250px;">
+                给定了部分可选的模型列表、你可以可以手动填写您需要调用的模型、请确保填写的模型是当前key支持的类型、否则可能会在调用中出现不可预知错误！
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="模型扣费类型" prop="deductType">
           <el-select v-model="formPackage.deductType" filterable allow-create clearable placeholder="请选用模型扣费类型" style="width: 80%;">
@@ -419,7 +426,9 @@ onMounted(() => {
                 设置当前key的扣费类型、扣除普通余额或是高级余额。
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="单词扣除金额" prop="deduct">
@@ -434,7 +443,9 @@ onMounted(() => {
                 设置当前key的单词调用扣除余额、建议同模型或名称key设置相同的金额、避免扣费发生异常！
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="上下文限制" prop="maxRounds">
@@ -449,7 +460,9 @@ onMounted(() => {
                 填写此配置可以限制用户在选择模型时候的高级配置中的最大上下文轮次、可以通过限制此数量减少token的损耗、减低上下文的损耗量、 如果设置了模型的最大token和返回量、那么两个限制会同时生效！
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="调用轮询权重" prop="keyWeight">
@@ -464,7 +477,9 @@ onMounted(() => {
                 当前轮询是根据模型下的列表按顺序调用、如果权重为2则表示轮到此key的时候会调用两次之后再轮询下一个key  保证每个key的调用顺序以及限制每次调用的准确次数
               </div>
             </template>
-            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item label="模型最大Token" prop="maxModelTokens">
@@ -473,27 +488,29 @@ onMounted(() => {
         <el-form-item label="最大回复Token" prop="maxResponseTokens">
           <el-input v-model.number="formPackage.maxResponseTokens" placeholder="请填写最大回复Token、不填写使用默认！" />
         </el-form-item>
-        <el-form-item label="调用超时时间" prop="timeout" v-if="[1].includes(Number(formPackage.keyType))">
+        <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="调用超时时间" prop="timeout">
           <el-input v-model.number="formPackage.timeout" placeholder="请填写key的超时时间单位（秒）！" />
         </el-form-item>
-        <el-form-item label="设为特殊key" prop="isDraw" v-if="[1].includes(Number(formPackage.keyType))">
+        <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="设为特殊key" prop="isDraw">
           <el-switch
             v-model="formPackage.isDraw"
           />
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="right"
-        >
-          <template #content>
-            <div style="width: 250px;">
-              基础绘画来自于OPENAI的DALL-E模型、所以需要为官方的apiKey、请确定至少设置一张key为基础绘画key即可使用绘画功能！同时当前版本的mind思维导图和mj联想绘图等功能都会走当前设置的key，会后后续版本解除此限制！
-            </div>
-          </template>
-          <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
-        </el-tooltip>
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <template #content>
+              <div style="width: 250px;">
+                绘画来自于智谱AI的cogview-3模型、所以需要为官方的apiKey、请确定至少设置一张key为基础绘画key即可使用绘画功能！
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
         </el-form-item>
-        <el-form-item label="指定代理地址" prop="proxyUrl" v-if="[1].includes(Number(formPackage.keyType))">
+        <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="指定代理地址" prop="proxyUrl">
           <el-input v-model.number="formPackage.proxyUrl" placeholder="如需使用代理请填写、不填写默认使用全局配置！" />
         </el-form-item>
       </el-form>
@@ -506,6 +523,5 @@ onMounted(() => {
         </span>
       </template>
     </el-dialog>
-
   </div>
 </template>
