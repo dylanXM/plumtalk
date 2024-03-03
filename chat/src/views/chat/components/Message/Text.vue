@@ -95,7 +95,7 @@ defineExpose({ textRef })
           <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
         </div>
         <div class="mt-1">
-          <NButton class="ml-2" text type="primary" @click="handleCopy">
+          <NButton class="ml-2" type="tertiary" text @click="handleCopy">
             <template #icon>
               <NIcon :size="10" :component="Copy" />
             </template>
@@ -103,7 +103,7 @@ defineExpose({ textRef })
           </NButton>
 
           <span class="ml-4" />
-          <NButton class="ml-2" text type="primary" @click="asRawText = !asRawText">
+          <NButton class="ml-2" type="tertiary" text @click="asRawText = !asRawText">
             <template #icon>
               <SvgIcon class="text-xs" :icon=" asRawText ? 'ic:outline-code-off' : 'ic:outline-code'" />
             </template>
@@ -111,7 +111,7 @@ defineExpose({ textRef })
           </NButton>
 
           <span class="ml-4" />
-          <NButton text type="primary" @click="handleDelete">
+          <NButton text type="tertiary" @click="handleDelete">
             <template #icon>
               <NIcon :size="10" :component="Delete" />
             </template>
@@ -119,7 +119,7 @@ defineExpose({ textRef })
           </NButton>
 
           <span class="ml-4" />
-          <NButton text type="primary" @click="handleRegenerate">
+          <NButton text type="tertiary" @click="handleRegenerate">
             <template #icon>
               <NIcon :size="10" :component="Refresh" />
             </template>
@@ -129,8 +129,8 @@ defineExpose({ textRef })
       </div>
       <div v-else>
         <div :class="wrapClass" class="whitespace-pre-wrap" v-text="text" />
-        <div v-if="false" class="mt-1">
-          <NButton class="ml-2" text color="#FFF" @click="handleCopy">
+        <div class="mt-1">
+          <NButton class="ml-2" text @click="handleCopy">
             <template #icon>
               <NIcon :size="10" :component="Copy" />
             </template>
@@ -138,7 +138,7 @@ defineExpose({ textRef })
             <span class="text-xs">复制</span>
           </NButton>
           <span class="ml-3" />
-          <NButton text color="#FFF" @click="handleDelete">
+          <NButton text @click="handleDelete">
             <template #icon>
               <NIcon :size="10" :component="Delete" />
             </template>

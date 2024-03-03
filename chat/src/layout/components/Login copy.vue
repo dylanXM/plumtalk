@@ -22,9 +22,9 @@ const registerSendModel3Count = computed(() => {
   return Number(authStore.globalConfig.registerSendModel3Count)
 })
 
-const registerSendModel4Count = computed(() => {
-  return Number(authStore.globalConfig.registerSendModel4Count)
-})
+// const registerSendModel4Count = computed(() => {
+//   return Number(authStore.globalConfig.registerSendModel4Count)
+// })
 
 const registerSendDrawMjCount = computed(() => {
   return Number(authStore.globalConfig.registerSendDrawMjCount)
@@ -42,7 +42,7 @@ interface Props {
   visible: boolean
 }
 
-const registerTips = computed(() => (`首次认证：赠送${registerSendModel3Count.value}积分基础模型 | ${registerSendModel4Count.value}积分高级模型 | ${registerSendDrawMjCount.value}积分绘画`))
+const registerTips = computed(() => (`首次认证：赠送${registerSendModel3Count.value}积分聊天模型 | ${registerSendDrawMjCount.value}积分绘画`))
 
 function openDialog() {
 
@@ -77,7 +77,9 @@ function handleCloseDialog() {
         </NTabPane>
       </NTabs>
       <NAlert v-if="registerSendStatus && !disabledReg" type="success" :show-icon="false" class="mt-5">
-        {{ registerTips }}
+        <div class="register-tips">
+          {{ registerTips }}
+        </div>
       </NAlert>
 
       <div v-if="disabledReg">
@@ -97,3 +99,10 @@ function handleCloseDialog() {
     </div>
   </NModal>
 </template>
+
+<style scoped>
+.register-tips {
+  display: flex;
+  justify-content: center;
+}
+</style>

@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref } from 'vue'
-import { NButton, NPopover, NSlider, NTooltip, useMessage } from 'naive-ui'
+import { NButton, NPopover, NTooltip, useMessage } from 'naive-ui'
 import { useUsingContext } from '../../hooks/useUsingContext'
 import { SvgIcon } from '@/components/common'
-import { useAppStore, useChatStore, useGlobalStoreWithOut, useAuthStore } from '@/store'
+import { useAppStore, useAuthStore, useChatStore, useGlobalStoreWithOut } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
-const authStore = useAuthStore()
 
 import type { Theme } from '@/store/modules/app/helper'
 defineProps<Props>()
-
 const emit = defineEmits<Emit>()
-
+const authStore = useAuthStore()
 const { usingContext, toggleUsingContext } = useUsingContext()
 
 interface Props {
@@ -52,14 +50,14 @@ const themeOptions: { label: string; key: Theme; icon: string }[] = [
   },
 ]
 
-
 const modelName = computed(() => {
-	if(!chatStore.activeConfig) return;
-	const { modelTypeInfo, modelInfo } =  chatStore.activeConfig
-	if(!modelTypeInfo || !modelInfo ) return
-	return `${modelTypeInfo?.label} / ${modelInfo.modelName}`
+  if (!chatStore.activeConfig)
+    return
+  const { modelTypeInfo, modelInfo } = chatStore.activeConfig
+  if (!modelTypeInfo || !modelInfo)
+    return
+  return `${modelTypeInfo?.label} / ${modelInfo.modelName}`
 })
-
 
 const appStore = useAppStore()
 const chatStore = useChatStore()
@@ -93,22 +91,21 @@ function handleScrollBtm() {
   emit('scrollBtn')
 }
 
-function handleOpenModelDialog(){
-	if(useGlobalStore.isChatIn){
-		return ms.warning('请等待聊天结束后修改模型信息！')
-	}
-	useGlobalStore.updateModelDialog(true)
+function handleOpenModelDialog() {
+  if (useGlobalStore.isChatIn)
+    return ms.warning('请等待聊天结束后修改模型信息！')
+
+  useGlobalStore.updateModelDialog(true)
 }
 const isLogin = computed(() => authStore.isLogin)
 
-function handleSignIn(){
-	if(!isLogin.value){
+function handleSignIn() {
+  if (!isLogin.value) {
     authStore.setLoginDialog(true)
-		return;
-	}
-	useGlobalStore.updateSignInDialog(true)
+    return
+  }
+  useGlobalStore.updateSignInDialog(true)
 }
-
 </script>
 
 <template>
@@ -127,99 +124,100 @@ function handleSignIn(){
           </button>
         </div>
 
-				<!-- pc -->
-				<div class="flex justify-between items-center h-full w-full">
-					<div class="flex-1 flex ele-drag items-center h-full">
-					<h1
-						class=" flex-1 px-4  font-bold pr-6 overflow-hidden cursor-pointer select-none text-ellipsis whitespace-nowrap"
-						@dblclick="onScrollToTop"
-					>
-						{{ currentChatHistory?.title ?? '' }}
-					</h1>
-					</div>
-					<div class="flex items-center space-x-2">
-						<NTooltip trigger="hover" :disabled="isMobile">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="toggleUsingContext">
-									<span class="" :class="{ 'text-[#3076fd]': usingContext, 'text-[#a8071a]': !usingContext }"><SvgIcon class="text-lg" style="width: 1em;height: 1em" icon="ri:chat-history-line" /></span>
-								</button>
-							</template>
-							上下文状态
-						</NTooltip>
+        <!-- pc -->
+        <div class="flex justify-between items-center h-full w-full">
+          <div class="flex-1 flex ele-drag items-center h-full">
+            <h1
+              class=" flex-1 px-4  font-bold pr-6 overflow-hidden cursor-pointer select-none text-ellipsis whitespace-nowrap"
+              @dblclick="onScrollToTop"
+            >
+              {{ currentChatHistory?.title ?? '' }}
+            </h1>
+          </div>
+          <div class="flex items-center space-x-2">
+            <NTooltip trigger="hover" :disabled="isMobile">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="toggleUsingContext">
+                  <span class="" :class="{ 'text-[#3076fd]': usingContext, 'text-[#a8071a]': !usingContext }"><SvgIcon class="text-lg" style="width: 1em;height: 1em" icon="ri:chat-history-line" /></span>
+                </button>
+              </template>
+              上下文状态
+            </NTooltip>
 
-						<NPopover v-if="isMobile" trigger="click">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]">
-									<span class="text-base text-slate-500 dark:text-slate-400">
-										<SvgIcon icon="fluent:dark-theme-24-regular" />
-									</span>
-								</button>
-							</template>
-							<div>
-								<div class="flex items-center gap-4">
-									<template v-for="item of themeOptions" :key="item.key">
-										<NButton
-											size="small"
-											:type="item.key === theme ? 'info' : undefined"
-											@click="appStore.setTheme(item.key)"
-										>
-											<template #icon>
-												<SvgIcon :icon="item.icon" />
-											</template>
-										</NButton>
-									</template>
-								</div>
-							</div>
-						</NPopover>
+            <NPopover v-if="isMobile" trigger="click">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]">
+                  <span class="text-base text-slate-500 dark:text-slate-400">
+                    <SvgIcon icon="fluent:dark-theme-24-regular" />
+                  </span>
+                </button>
+              </template>
+              <div>
+                <div class="flex items-center gap-4">
+                  <template v-for="item of themeOptions" :key="item.key">
+                    <NButton
+                      size="small"
+                      :type="item.key === theme ? 'info' : undefined"
+                      @click="appStore.setTheme(item.key)"
+                    >
+                      <template #icon>
+                        <SvgIcon :icon="item.icon" />
+                      </template>
+                    </NButton>
+                  </template>
+                </div>
+              </div>
+            </NPopover>
 
-						<NTooltip trigger="hover" v-if="isMobile" :disabled="isMobile">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleSignIn">
-									<span class="text-base text-slate-500 dark:text-slate-400">
-										<SvgIcon icon="ant-design:gift-outlined" />
-									</span>
-								</button>
-							</template>
-							签到领福利
-						</NTooltip>
-						<NTooltip trigger="hover" :disabled="isMobile">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleExport">
-									<span class="text-base text-slate-500 dark:text-slate-400">
-										<SvgIcon icon="material-symbols:sim-card-download-outline-rounded" />
-									</span>
-								</button>
-							</template>
-							导出本页为图片
-						</NTooltip>
-						<NTooltip trigger="hover" :disabled="isMobile">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleClear">
-									<span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:delete-outline" /></span>
-								</button>
-							</template>
-							删除本页内容
-						</NTooltip>
-						<NTooltip trigger="hover" :disabled="isMobile">
-							<template #trigger>
-								<button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleScrollBtm">
-									<span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:keyboard-arrow-down" /></span>
-								</button>
-							</template>
-							滚动到底部
-						</NTooltip>
-					</div>
-				</div>
+            <NTooltip v-if="isMobile" trigger="hover" :disabled="isMobile">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleSignIn">
+                  <span class="text-base text-slate-500 dark:text-slate-400">
+                    <SvgIcon icon="ant-design:gift-outlined" />
+                  </span>
+                </button>
+              </template>
+              签到领福利
+            </NTooltip>
+            <NTooltip trigger="hover" :disabled="isMobile">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleExport">
+                  <span class="text-base text-slate-500 dark:text-slate-400">
+                    <SvgIcon icon="material-symbols:sim-card-download-outline-rounded" />
+                  </span>
+                </button>
+              </template>
+              导出本页为图片
+            </NTooltip>
+            <NTooltip trigger="hover" :disabled="isMobile">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleClear">
+                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:delete-outline" /></span>
+                </button>
+              </template>
+              删除本页内容
+            </NTooltip>
+            <NTooltip trigger="hover" :disabled="isMobile">
+              <template #trigger>
+                <button class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]" @click="handleScrollBtm">
+                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:keyboard-arrow-down" /></span>
+                </button>
+              </template>
+              滚动到底部
+            </NTooltip>
+          </div>
+        </div>
       </div>
     </div>
     <!-- <NPopover :show="showModelPopover">
       <template #trigger> -->
-        <div class="absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap cursor-pointer select-none rounded-b-md border bg-white px-4 dark:border-neutral-700 dark:bg-[#111114] flex items-center hover:text-[#5a91fc] transition" @click="handleOpenModelDialog">
+    <!-- TODO 这是模型选择，有可能要放开 -->
+    <!-- <div class="absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap cursor-pointer select-none rounded-b-md border bg-white px-4 dark:border-neutral-700 dark:bg-[#111114] flex items-center hover:text-[#5a91fc] transition" @click="handleOpenModelDialog">
 					<SvgIcon  class="text-base mr-2" icon="fluent:flash-sparkle-20-regular" />
           {{ modelName }}
           <SvgIcon class="text-2xl" :icon="useGlobalStore.modelDialog ? 'ri:arrow-down-s-line' : 'ri:arrow-right-s-line'" />
-        </div>
-      <!-- </template>
+        </div> -->
+    <!-- </template>
       <template #header>
         <span class="cursor-pointer  hover:text-[#3076fd]" @click="handleChangeMode(3)">
           GPT-3.5

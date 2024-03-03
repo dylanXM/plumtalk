@@ -37,7 +37,7 @@ import { ModelsService } from '../models/models.service';
 import { sendMessageFromBaidu } from './baidu';
 import { addOneIfOdd, unifiedFormattingResponse } from './helper';
 import { MessageInfo, NineStore, NineStoreInterface } from './store';
-import {sendMessageFromZhipu, sendMessageFromZhipuV2} from './zhipu';
+import { sendMessageFromZhipu, sendMessageFromZhipuV2 } from './zhipu';
 import { getTokenCount, sendMessageFromOpenAi } from './openai';
 import { ChatBoxTypeEntity } from './chatBoxType.entity';
 import { ChatBoxEntity } from './chatBox.entity';
@@ -602,7 +602,7 @@ export class ChatgptService implements OnModuleInit {
     // TODO 目前仅支持一张才这样计算
     const money = body?.quality === 'hd' ? 4 : 2;
     await this.userBalanceService.validateBalance(req, 'mjDraw', money);
-    let images = [];
+    const images = [];
     /* 从3的卡池随机拿一个key */
     const detailKeyInfo = await this.modelsService.getRandomDrawKey();
     // const keyId = detailKeyInfo?.id;
@@ -615,13 +615,13 @@ export class ChatgptService implements OnModuleInit {
       console.log('dall-e draw params: ', params);
       const ai = new ZhipuAI({
         // 填写您的 APIKey 不填的话默认从环境变量读取 ZHIPUAI_API_KEY 的值
-        apiKey: key
-      })
+        apiKey: key,
+      });
       const res = await ai.createImages({
-        ...params
-      })
+        ...params,
+      });
       // const res = await axios.post(api, { ...params, response_format: 'b64_json' }, { headers: { Authorization: key, 'Content-Type': 'application/json', } });
-      console.log('dall-e draw res: ', res)
+      console.log('dall-e draw res: ', res);
       // images = res.data;
       // const task = [];
       // for (const item of images) {
