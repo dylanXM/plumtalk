@@ -68,7 +68,7 @@ const rules = reactive<FormRules>({
   status: [{ required: true, message: '请选择套餐开启状态', trigger: 'change' }],
   days: [{ required: true, message: '请填写套餐有效期天数', trigger: 'blur' }],
   model3Count: [{ required: true, message: '请填写套餐中基础模型可使用次数', trigger: 'blur' }],
-  model4Count: [{ required: true, message: '请填写套餐中高级模型可使用次数', trigger: 'blur' }],
+  // model4Count: [{ required: true, message: '请填写套餐中高级模型可使用次数', trigger: 'blur' }],
   drawMjCount: [{ required: true, message: '请填写套餐中抽奖次数', trigger: 'blur' }],
 })
 
@@ -231,7 +231,7 @@ onMounted(() => {
           </template>
         </el-table-column>
         <el-table-column prop="model3Count" label="基础模型额度" width="100" />
-        <el-table-column prop="model4Count" label="高级模型额度" width="100" />
+<!--        <el-table-column prop="model4Count" label="高级模型额度" width="100" />-->
         <el-table-column prop="drawMjCount" label="绘画额度" width="100" />
         <el-table-column prop="des" label="套餐描述" width="300" />
         <el-table-column prop="createdAt" label="创建时间" width="200">
@@ -342,9 +342,9 @@ onMounted(() => {
             <el-form-item label="基础模型积分" prop="model3Count">
               <el-input v-model.number="formPackage.model3Count" type="number" placeholder="基础模型积分" />
             </el-form-item>
-            <el-form-item label="高级模型积分" prop="model4Count">
-              <el-input v-model.number="formPackage.model4Count" type="number" placeholder="高级模型积分" />
-            </el-form-item>
+<!--            <el-form-item label="高级模型积分" prop="model4Count">-->
+<!--              <el-input v-model.number="formPackage.model4Count" type="number" placeholder="高级模型积分" />-->
+<!--            </el-form-item>-->
             <el-form-item label="绘画模型积分" prop="drawMjCount">
               <el-input v-model.number="formPackage.drawMjCount" type="number" placeholder="绘画模型积分" />
             </el-form-item>

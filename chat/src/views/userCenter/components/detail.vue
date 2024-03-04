@@ -64,12 +64,12 @@ onMounted(() => {
           {{ userBalance.sumModel3Count || "0" }} 积分
         </div>
       </div>
-      <div class="flex items-center space-x-4 pl-3 mt-3">
-        <span class="flex-shrink-0 w-24 text-primary">高级模型余额:</span>
-        <div class="w-[200px]">
-          {{ userBalance.sumModel4Count || "0" }} 积分
-        </div>
-      </div>
+<!--      <div class="flex items-center space-x-4 pl-3 mt-3">-->
+<!--        <span class="flex-shrink-0 w-24 text-primary">高级模型余额:</span>-->
+<!--        <div class="w-[200px]">-->
+<!--          {{ userBalance.sumModel4Count || "0" }} 积分-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="flex items-center space-x-4 pl-3 mt-3">
         <span class="flex-shrink-0 w-24 text-primary">绘画余额:</span>
         <div class="w-[200px]">

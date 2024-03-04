@@ -17,7 +17,7 @@ const formInline = reactive({
 
 const rules = ref<FormRules>({
   visitorModel3Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的基础模型积分' }],
-  visitorModel4Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的高级模型积分' }],
+  // visitorModel4Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的高级模型积分' }],
   visitorMJNum: [{ required: true, trigger: 'blur', message: '请填写每日限制的绘画额度积分' }],
 })
 
@@ -81,13 +81,13 @@ onMounted(() => {
           </el-col>
         </el-row>
 
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="高级模型额度" prop="visitorModel4Num">
-              <el-input v-model="formInline.visitorModel4Num" type="number" placeholder="请填写每日限制的高级模型积分" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="高级模型额度" prop="visitorModel4Num">-->
+<!--              <el-input v-model="formInline.visitorModel4Num" type="number" placeholder="请填写每日限制的高级模型积分" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="绘画积分额度" prop="visitorMJNum">

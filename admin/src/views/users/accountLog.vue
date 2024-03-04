@@ -54,7 +54,7 @@ interface UserItem {
 
 const rules = reactive<FormRules>({
   model3Count: [{ required: true, message: '请填写赠送基础模型额度', trigger: 'blur' }],
-  model4Count: [{ required: true, message: '请填写赠送高级模型额度', trigger: 'blur' }],
+  // model4Count: [{ required: true, message: '请填写赠送高级模型额度', trigger: 'blur' }],
   drawMjCount: [{ required: true, message: '请填写赠送绘画积分额度', trigger: 'blur' }],
 })
 
@@ -148,7 +148,7 @@ onMounted(() => queryAllAccountLog())
           </template>
         </el-table-column>
         <el-table-column prop="model3Count" label="基础模型额度" width="120" align="center" />
-        <el-table-column prop="model4Count" label="高级模型额度" width="120" align="center" />
+<!--        <el-table-column prop="model4Count" label="高级模型额度" width="120" align="center" />-->
         <el-table-column prop="drawMjCount" label="绘画余额额度" width="120" align="center" />
         <el-table-column label="额度有效期" width="170" align="center">
           <template #default="scope">

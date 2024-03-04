@@ -116,24 +116,24 @@ setTimeout(() => {
               {{ userBalance.useModel3Count || "0" }} 积分
             </div>
           </div>
-          <div class="flex items-center space-x-4 pl-3 mt-3">
-            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型积分:</span>
-            <div class="w-[230px]">
-              {{ userBalance.useModel4Count || "0" }} 积分
-            </div>
-          </div>
+<!--          <div class="flex items-center space-x-4 pl-3 mt-3">-->
+<!--            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型积分:</span>-->
+<!--            <div class="w-[230px]">-->
+<!--              {{ userBalance.useModel4Count || "0" }} 积分-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="flex items-center space-x-4 pl-3 mt-3">
             <span class="flex-shrink-0 w-[90px] text-keft text-primary">基础模型使用:</span>
             <div class="w-[230px]">
               {{ userBalance.useModel3Token || "0" }} Token
             </div>
           </div>
-          <div class="flex items-center space-x-4 pl-3 mt-3">
-            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型使用:</span>
-            <div class="w-[230px]">
-              {{ userBalance.useModel4Token || "0" }} Token
-            </div>
-          </div>
+<!--          <div class="flex items-center space-x-4 pl-3 mt-3">-->
+<!--            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型使用:</span>-->
+<!--            <div class="w-[230px]">-->
+<!--              {{ userBalance.useModel4Token || "0" }} Token-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="flex items-center space-x-4 pl-3 mt-3">
             <span class="flex-shrink-0 w-[90px] text-keft text-primary">绘画使用积分:</span>
             <div class="w-[230px]">

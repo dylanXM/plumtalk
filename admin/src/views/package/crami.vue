@@ -256,7 +256,7 @@ onMounted(() => {
         <el-table-column prop="useId" label="使用人ID" width="90" />
         <el-table-column v-if="hasEmail" prop="email" label="使用人邮箱" width="180" />
         <el-table-column prop="model3Count" label="基础模型额度" />
-        <el-table-column prop="model4Count" label="高级模型额度" />
+<!--        <el-table-column prop="model4Count" label="高级模型额度" />-->
         <el-table-column prop="drawMjCount" label="绘画模型额度" />
         <el-table-column prop="days" label="有效天数">
           <template #default="scope">
@@ -324,9 +324,9 @@ onMounted(() => {
           <el-form-item label="基础模型额度" prop="model3Count">
             <el-input v-model.number="form.model3Count" type="number" placeholder="卡密携带基础模型额度" />
           </el-form-item>
-          <el-form-item label="高级模型额度" prop="model4Count">
-            <el-input v-model.number="form.model4Count" type="number" placeholder="卡密携带高级模型额度" />
-          </el-form-item>
+<!--          <el-form-item label="高级模型额度" prop="model4Count">-->
+<!--            <el-input v-model.number="form.model4Count" type="number" placeholder="卡密携带高级模型额度" />-->
+<!--          </el-form-item>-->
           <el-form-item label="绘画模型额度" prop="drawMjCount">
             <el-input v-model.number="form.drawMjCount" type="number" placeholder="卡密携带绘画积分额度" />
           </el-form-item>

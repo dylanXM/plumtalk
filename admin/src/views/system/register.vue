@@ -158,13 +158,13 @@ onMounted(() => {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="注册赠送高级模型对话额度" prop="registerSendModel4Count" :rules="registerSendRules">
-              <el-input v-model="formInline.registerSendModel4Count" placeholder="首次注册赠高级模型对话额度" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="注册赠送高级模型对话额度" prop="registerSendModel4Count" :rules="registerSendRules">-->
+<!--              <el-input v-model="formInline.registerSendModel4Count" placeholder="首次注册赠高级模型对话额度" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="注册赠送绘画额度" prop="registerSendDrawMjCount" :rules="registerSendRules">
@@ -199,13 +199,13 @@ onMounted(() => {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="优先赠高级模型送对话额度" prop="firstRregisterSendModel4Count" :rules="firstSendRules">
-              <el-input v-model="formInline.firstRregisterSendModel4Count" placeholder="优先注册用户额外赠送高级模型对话额度" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="优先赠高级模型送对话额度" prop="firstRregisterSendModel4Count" :rules="firstSendRules">-->
+<!--              <el-input v-model="formInline.firstRregisterSendModel4Count" placeholder="优先注册用户额外赠送高级模型对话额度" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="优先赠送绘画额度" prop="firstRregisterSendDrawMjCount" :rules="firstSendRules">
@@ -233,13 +233,13 @@ onMounted(() => {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="邀请赠送高级模型对话额度" prop="inviteGiveSendModel4Count" :rules="inviteRules">
-              <el-input v-model="formInline.inviteGiveSendModel4Count" placeholder="邀请注册用户赠送高级模型对话额度" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="邀请赠送高级模型对话额度" prop="inviteGiveSendModel4Count" :rules="inviteRules">-->
+<!--              <el-input v-model="formInline.inviteGiveSendModel4Count" placeholder="邀请注册用户赠送高级模型对话额度" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="邀请赠送绘画积分额度" prop="inviteGiveSendDrawMjCount" :rules="inviteRules">
@@ -254,13 +254,13 @@ onMounted(() => {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="被邀请赠送高级模型对话额度" prop="invitedGuestSendModel4Count" :rules="inviteRules">
-              <el-input v-model="formInline.invitedGuestSendModel4Count" placeholder="被邀请注册用户赠送高级模型对话额度" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="被邀请赠送高级模型对话额度" prop="invitedGuestSendModel4Count" :rules="inviteRules">-->
+<!--              <el-input v-model="formInline.invitedGuestSendModel4Count" placeholder="被邀请注册用户赠送高级模型对话额度" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="被邀请赠送绘画额度" prop="invitedGuestSendDrawMjCount" :rules="inviteRules">

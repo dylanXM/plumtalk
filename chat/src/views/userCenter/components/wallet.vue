@@ -73,10 +73,10 @@ const columns = computed(() => {
       title: '基础模型额度',
       key: 'model3Count',
     },
-    {
-      title: '高级模型额度',
-      key: 'model4Count',
-    },
+    // {
+    //   title: '高级模型额度',
+    //   key: 'model4Count',
+    // },
     {
       title: 'MJ绘画额度',
       key: 'drawMjCount',
@@ -152,14 +152,15 @@ onMounted(() => {
           </div>
           <b class="text-3xl text-[#555]">{{ userBalance.sumModel3Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
         </NGridItem>
+<!--        <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">-->
+<!--          <div class="text-[#95aac9] mb-2 text-base">-->
+<!--            高级模型余额-->
+<!--          </div>-->
+<!--          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>-->
+<!--        </NGridItem>-->
         <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
           <div class="text-[#95aac9] mb-2 text-base">
-            高级模型余额
-          </div>
-          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
-        </NGridItem><NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
-          <div class="text-[#95aac9] mb-2 text-base">
-            MJ绘画余额
+            绘画余额
           </div>
           <b class="text-3xl text-[#555]">{{ userBalance.sumDrawMjCount ?? 0 }}</b> <span class="ml-4 text-[#989898]">根据画图动作消耗不同的积分！</span>
         </NGridItem><NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
@@ -204,10 +205,10 @@ onMounted(() => {
                   <span class="text-sm font-bold mr-1">基础模型额度</span>
                   <span class="font-bold">{{ item.model3Count }}</span>
                 </div>
-                <div class="flex justify-between items-end min-h-28">
-                  <span class="text-sm font-bold mr-1">高级模型额度</span>
-                  <span class="font-bold">{{ item.model4Count }}</span>
-                </div>
+<!--                <div class="flex justify-between items-end min-h-28">-->
+<!--                  <span class="text-sm font-bold mr-1">高级模型额度</span>-->
+<!--                  <span class="font-bold">{{ item.model4Count }}</span>-->
+<!--                </div>-->
                 <div class="flex justify-between items-end min-h-28">
                   <span class="text-sm font-bold mr-1">MJ绘画额度</span>
                   <span class="font-bold">{{ item.drawMjCount }}</span>

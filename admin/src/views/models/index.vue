@@ -464,7 +464,7 @@ onMounted(() => {
         <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="调用超时时间" prop="timeout">
           <el-input v-model.number="formPackage.timeout" placeholder="请填写key的超时时间单位（秒）！" />
         </el-form-item>
-        <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="设为特殊key" prop="isDraw">
+        <el-form-item v-if="[1, 4].includes(Number(formPackage.keyType))" label="是否支持绘画" prop="isDraw">
           <el-switch
             v-model="formPackage.isDraw"
           />

@@ -23,9 +23,9 @@ const rules = ref<FormRules>({
   signInModel3Count: [
     { required: true, trigger: 'blur', message: '请填写赠送的基础模型额度' },
   ],
-  signInModel4Count: [
-    { required: true, trigger: 'blur', message: '请填写赠送的高级模型额度' },
-  ],
+  // signInModel4Count: [
+  //   { required: true, trigger: 'blur', message: '请填写赠送的高级模型额度' },
+  // ],
   signInMjDrawToken: [
     { required: true, trigger: 'blur', message: '请填写赠送的绘画Token数量' },
   ],
@@ -107,13 +107,13 @@ onMounted(() => {
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :xs="24" :md="20" :lg="15" :xl="12">
-            <el-form-item label="赠送高级模型额度" prop="signInModel4Count">
-              <el-input v-model="formInline.signInModel4Count" type="number" placeholder="请填写签到赠送的高级模型额度" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :xs="24" :md="20" :lg="15" :xl="12">-->
+<!--            <el-form-item label="赠送高级模型额度" prop="signInModel4Count">-->
+<!--              <el-input v-model="formInline.signInModel4Count" type="number" placeholder="请填写签到赠送的高级模型额度" clearable />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :xs="24" :md="20" :lg="15" :xl="12">
             <el-form-item label="赠送绘画额度" prop="signInMjDrawToken">

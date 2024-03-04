@@ -183,8 +183,10 @@ onMounted(() => {
       <NGridItem v-if="Number(globalConfig?.inviteSendStatus) === 1" class="border rounded-sm p-3  dark:border-[#ffffff17]" :span="1">
         <b class="text-[000]">Tips</b>
         <div class="flex flex-col text-[#707384]">
-          <span>邀请一位用户赠送{{ globalConfig.inviteGiveSendModel3Count }}积分基础模型额度+{{ globalConfig.inviteGiveSendModel4Count }}积分高级模型额度+{{ globalConfig.inviteGiveSendDrawMjCount }}MJ绘画积分额度</span>
-          <span>收到邀请用户获得{{ globalConfig.invitedGuestSendModel3Count }}积分基础模型额度+{{ globalConfig.invitedGuestSendModel4Count }}积分高级模型额度+{{ globalConfig.invitedGuestSendDrawMjCount }}MJ绘画积分额度</span>
+<!--          <span>邀请一位用户赠送{{ globalConfig.inviteGiveSendModel3Count }}积分基础模型额度+{{ globalConfig.inviteGiveSendModel4Count }}积分高级模型额度+{{ globalConfig.inviteGiveSendDrawMjCount }}MJ绘画积分额度</span>-->
+<!--          <span>收到邀请用户获得{{ globalConfig.invitedGuestSendModel3Count }}积分基础模型额度+{{ globalConfig.invitedGuestSendModel4Count }}积分高级模型额度+{{ globalConfig.invitedGuestSendDrawMjCount }}MJ绘画积分额度</span>-->
+          <span>邀请一位用户赠送{{ globalConfig.inviteGiveSendModel3Count }}积分基础模型额度+{{ globalConfig.inviteGiveSendDrawMjCount }}绘画积分额度</span>
+          <span>收到邀请用户获得{{ globalConfig.invitedGuestSendModel3Count }}积分基础模型额度+{{ globalConfig.invitedGuestSendDrawMjCount }}绘画积分额度</span>
         </div>
       </NGridItem>
     </NGrid>

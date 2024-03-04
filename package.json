@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "longyanjiang",
   "keywords": ["ChatGpt", "AIGC", "AI"],
+  "scripts":{
+    "build": "cd service && pnpm build && cd ../chat && pnpm build && cd ../admin && pnpm build"
+  },
   "dependencies": {
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-antfu": "^0.35.3",
