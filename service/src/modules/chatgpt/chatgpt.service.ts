@@ -605,33 +605,22 @@ export class ChatgptService implements OnModuleInit {
     let images = [];
     /* 从3的卡池随机拿一个key */
     const detailKeyInfo = await this.modelsService.getRandomDrawKey();
-    // const keyId = detailKeyInfo?.id;
-    // const { key, proxyResUrl } = await this.formatModelToken(detailKeyInfo);
-    const key = detailKeyInfo.key;
+    const keyId = detailKeyInfo?.id;
+    const { key, proxyResUrl } = await this.formatModelToken(detailKeyInfo);
     Logger.log(`draw paompt info <==**==> ${body.prompt}, key ===> ${key}`, 'DrawService');
     try {
-      const api = `https://open.bigmodel.cn/api/paas/v4/images/generations`;
-      const params = { ...body, model: 'cogview-3' };
+      const api = `${proxyResUrl}/images/generations`;
+      const params = { ...body, model: 'dall-e-3' };
       console.log('dall-e draw params: ', params);
-      const ai = new ZhipuAI({
-        // 填写您的 APIKey 不填的话默认从环境变量读取 ZHIPUAI_API_KEY 的值
-        apiKey: key
-      })
-      const res = await ai.createImages({
-        ...params
-      })
-      // const res = await axios.post(api, { ...params, response_format: 'b64_json' }, { headers: { Authorization: key, 'Content-Type': 'application/json', } });
-      console.log('dall-e draw res: ', res)
-      // images = res.data;
-      // const task = [];
-      // for (const item of images) {
-      //   const filename = uuid.v4().slice(0, 10) + '.png';
-      //   const buffer = Buffer.from(item.b64_json, 'base64');
-      //   task.push(this.uploadService.uploadFile({ filename, buffer }));
-      // }
-      // const urls = await Promise.all(task);
-      // @ts-ignore
-      const urls = res.data?.map((item: { url: string }) => item.url);
+      const res = await axios.post(api, { ...params, response_format: 'b64_json' }, { headers: { Authorization: `Bearer ${key}` } });
+      images = res.data.data;
+      const task = [];
+      for (const item of images) {
+        const filename = uuid.v4().slice(0, 10) + '.png';
+        const buffer = Buffer.from(item.b64_json, 'base64');
+        task.push(this.uploadService.uploadFile({ filename, buffer }));
+      }
+      const urls = await Promise.all(task);
       /* 绘制openai的dall-e2绘画也扣除的是绘画积分次数 */
       await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', params?.quality === 'standard' ? 2 : 4, money);
       const curIp = getClientIp(req);
@@ -672,7 +661,7 @@ export class ChatgptService implements OnModuleInit {
         throw new HttpException('您的请求已被系统拒绝。您的提示可能存在一些非法的文本。', HttpStatus.BAD_REQUEST);
       }
       if (status === 400 && message.includes('Billing hard limit has been reached')) {
-        // await this.modelsService.lockKey(keyId, '当前模型key已被封禁、已冻结当前调用Key、尝试重新对话试试吧！', -1);
+        await this.modelsService.lockKey(keyId, '当前模型key已被封禁、已冻结当前调用Key、尝试重新对话试试吧！', -1);
         throw new HttpException('当前Key余额已不足、请重新再试一次吧！', HttpStatus.BAD_REQUEST);
       }
       if (status === 500) {
@@ -684,7 +673,6 @@ export class ChatgptService implements OnModuleInit {
       throw new HttpException('绘制图片失败，请稍后试试吧！', HttpStatus.BAD_REQUEST);
     }
   }
-
   /* 当前所有key的列表 */
   async getAllKeyList() {
     const list = await this.gptKeysEntity.find({

@@ -187,7 +187,7 @@ onMounted(() => {
         <h4 class="text-base mb-2">
           参数设置
         </h4>
-        <!-- <div class="flex items-center mt-5">
+        <div class="flex items-center mt-5">
           <span class="mr-2 inline-block w-16 flex-shrink-0">图片尺寸:</span>
           <div>
             <span v-for="item in imageSizeList" :key="item.value" class="rounded ml-2 select-none cursor-pointer inline-block mb-2" :class="[item.value === form.size ? ['text-primary', 'bg-[#0d6efd1c]'] : ['bg-[#bfc4d033]'], isMobile ? 'px-1.5 py-0.5' : 'px-3 py-1']" @click="form.size = item.value">{{ item.label }}</span>
@@ -198,7 +198,7 @@ onMounted(() => {
           <div>
             <span v-for="item in qualityList" :key="item.value" class=" py-0.5 px-2.5 rounded ml-2 select-none cursor-pointer inline-block mb-2" :class="item.value === form.quality ? ['text-primary', 'bg-[#0d6efd1c]'] : ['bg-[#bfc4d033]']" @click="form.quality = item.value">{{ item.label }}</span>
           </div>
-        </div> -->
+        </div>
         <!-- <div class="flex mt-6 pb-8 border-b border-[#000c3f1a]">
           <span class="mr-2  w-16 flex-shrink-0">图片张数:</span>
           <div>
