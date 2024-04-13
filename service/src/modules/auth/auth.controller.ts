@@ -99,4 +99,10 @@ export class AuthController {
   async sendPhoneCode(@Body() parmas: SendPhoneCodeDto) {
     return this.authService.sendPhoneCode(parmas);
   }
+
+  @Post('registerOrLoginByWechat')
+  @ApiOperation({ summary: '微信登录注册' })
+  async registerOrLoginByWechat(@Body() body: { openId: string; avatar: string }, @Req() req: Request) {
+    return this.authService.registerOrLoginByWechat(body, req);
+  }
 }

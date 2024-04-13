@@ -132,4 +132,10 @@ export class OfficialController {
   async loginByCode(@Req() req: Request, @Body() body: { code: string }) {
     return this.officialService.loginByCode(req, body.code);
   }
+
+  @Get('getWechatSession')
+  @ApiOperation({ summary: '获取微信session' })
+  async getWechatSession(@Query() query: { code: string }) {
+    return this.officialService.getWechatSession(query.code);
+  }
 }

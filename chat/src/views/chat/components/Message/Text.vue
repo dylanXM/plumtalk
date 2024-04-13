@@ -110,7 +110,7 @@ defineExpose({ textRef })
             <span class="text-xs">{{ asRawText ? t('chat.preview') : t('chat.showRawText') }}</span>
           </NButton>
 
-          <span class="ml-4" />
+<!--          <span class="ml-4" />-->
 <!--          <NButton text type="tertiary" @click="handleDelete">-->
 <!--            <template #icon>-->
 <!--              <NIcon :size="10" :component="Delete" />-->

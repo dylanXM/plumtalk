@@ -271,4 +271,14 @@ export class AuthService {
     });
     return token;
   }
+
+  /* wechat login or register */
+  async registerOrLoginByWechat(body, req): Promise<string> {
+    const user = await this.userService.getUserFromOpenId(body.openId);
+    if (user) {
+      return this.loginByOpenId(user, req);
+    }
+    const newUser = await this.userService.createUserFromOpenId(body.openId, '', body.avatar);
+    return this.loginByOpenId(newUser, req);
+  }
 }

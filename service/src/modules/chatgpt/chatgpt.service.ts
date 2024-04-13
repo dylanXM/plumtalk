@@ -600,7 +600,7 @@ export class ChatgptService implements OnModuleInit {
     await this.badwordsService.checkBadWords(body.prompt, req.user.id);
     await this.userService.checkUserStatus(req.user);
     // TODO 目前仅支持一张才这样计算
-    const money = body?.quality === 'hd' ? 4 : 2;
+    const money = body?.quality === 'hd' ? 10 : 5;
     await this.userBalanceService.validateBalance(req, 'mjDraw', money);
     let images = [];
     /* 从3的卡池随机拿一个key */

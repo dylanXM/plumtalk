@@ -43,8 +43,8 @@ const imageSizeList = [
 ]
 
 const qualityList = [
-  { label: '标准(2积分)', value: 'standard' },
-  { label: '优质(4积分)', value: 'hd' },
+  { label: '标准(5积分)', value: 'standard' },
+  { label: '优质(10积分)', value: 'hd' },
 ]
 
 // const imageNumList = [

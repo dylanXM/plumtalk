@@ -173,4 +173,19 @@ export class OfficialService {
     }
     return question;
   }
+
+  // 根据微信code获取openId,sessionKey等信息
+  async getWechatSession(code: string) {
+    const appId = 'wx81c4c212b7f5bfc7';
+    const secret = '0e37f49ce6828e16d165c7d5f47ab7c2';
+    const res = await axios.get(
+      `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
+    );
+    console.log('res', res);
+    const {
+      data: { errmsg, openid, session_key },
+    } = res;
+    if (errmsg) throw new HttpException(errmsg, HttpStatus.BAD_REQUEST);
+    return { openId: openid, sessionKey: session_key };
+  }
 }
