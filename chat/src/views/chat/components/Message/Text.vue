@@ -95,7 +95,7 @@ defineExpose({ textRef })
           <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
         </div>
         <div class="mt-1">
-          <NButton class="ml-2" type="tertiary" text @click="handleCopy">
+          <NButton class="ml-2" text type="tertiary" @click="handleCopy">
             <template #icon>
               <NIcon :size="10" :component="Copy" />
             </template>
@@ -103,20 +103,20 @@ defineExpose({ textRef })
           </NButton>
 
           <span class="ml-4" />
-          <NButton class="ml-2" type="tertiary" text @click="asRawText = !asRawText">
+          <NButton class="ml-2" text type="tertiary" @click="asRawText = !asRawText">
             <template #icon>
               <SvgIcon class="text-xs" :icon=" asRawText ? 'ic:outline-code-off' : 'ic:outline-code'" />
             </template>
             <span class="text-xs">{{ asRawText ? t('chat.preview') : t('chat.showRawText') }}</span>
           </NButton>
 
-          <span class="ml-4" />
-          <NButton text type="tertiary" @click="handleDelete">
-            <template #icon>
-              <NIcon :size="10" :component="Delete" />
-            </template>
-            <span class="text-xs">删除</span>
-          </NButton>
+          <!--          <span class="ml-4" /> -->
+          <!--          <NButton text type="tertiary" @click="handleDelete"> -->
+          <!--            <template #icon> -->
+          <!--              <NIcon :size="10" :component="Delete" /> -->
+          <!--            </template> -->
+          <!--            <span class="text-xs">删除</span> -->
+          <!--          </NButton> -->
 
           <span class="ml-4" />
           <NButton text type="tertiary" @click="handleRegenerate">

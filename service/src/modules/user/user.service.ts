@@ -463,10 +463,10 @@ export class UserService {
   }
 
   /* 通过openId创建一个用户, 传入邀请码 是邀请人的不是自己的 */
-  async createUserFromOpenId(openId: string, invitedBy: string) {
+  async createUserFromOpenId(openId: string, invitedBy: string, avatar?: string) {
     const userDefautlAvatar = await this.globalConfigService.getConfigs(['userDefautlAvatar']);
     const userInfo = {
-      avatar: userDefautlAvatar,
+      avatar: avatar ?? userDefautlAvatar,
       username: `用户${createRandomUid()}`,
       status: UserStatusEnum.ACTIVE,
       sex: 0,

@@ -14,7 +14,7 @@ interface SendMessageResult {
 function getFullUrl(proxyUrl) {
   const processedUrl = proxyUrl.endsWith('/') ? proxyUrl.slice(0, -1) : proxyUrl;
   const baseUrl = processedUrl || 'https://api.openai.com/v1';
-  return `${baseUrl}/chat/completions`;
+  return baseUrl;
 }
 
 export function sendMessageFromOpenAi(messagesHistory, inputs) {
@@ -22,7 +22,7 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
   const max_tokens = compilerToken(model, maxToken);
   const options: AxiosRequestConfig = {
     method: 'POST',
-    url: getFullUrl(proxyUrl),
+    url: `${getFullUrl(proxyUrl)}/chat/completions`,
     responseType: 'stream',
     headers: {
       'Content-Type': 'application/json',
