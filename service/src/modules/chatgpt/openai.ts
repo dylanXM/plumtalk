@@ -17,6 +17,8 @@ function getFullUrl(proxyUrl) {
   return baseUrl;
 }
 
+let lastString = '';
+
 export function sendMessageFromOpenAi(messagesHistory, inputs) {
   const { onProgress, maxToken, apiKey, model, temperature = 0.95, proxyUrl } = inputs;
   const max_tokens = compilerToken(model, maxToken);
@@ -62,7 +64,9 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
             return result;
           }
           try {
-            const parsedData = JSON.parse(data);
+            const newData = lastString + data;
+            const parsedData = JSON.parse(newData);
+            lastString = '';
             if (parsedData.id) {
               result.id = parsedData.id;
             }
@@ -77,7 +81,8 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
             }
             onProgress && onProgress({ text: result.text });
           } catch (error) {
-            console.log('parse Error', data);
+            console.log('parse error: ', data);
+            lastString += data;
           }
         }
       });

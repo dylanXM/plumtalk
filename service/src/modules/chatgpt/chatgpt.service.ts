@@ -602,7 +602,7 @@ export class ChatgptService implements OnModuleInit {
     // TODO 目前仅支持一张才这样计算
     const money = body?.quality === 'hd' ? 10 : 5;
     await this.userBalanceService.validateBalance(req, 'mjDraw', money);
-    const images = [];
+    let images = [];
     /* 从3的卡池随机拿一个key */
     const detailKeyInfo = await this.modelsService.getRandomDrawKey();
     const keyId = detailKeyInfo?.id;
