@@ -3,7 +3,7 @@
  * @param keyType 模型key类型
  * @param response 模型返回的整体内容
  */
-export function unifiedFormattingResponse(keyType, response, others){
+export function unifiedFormattingResponse(keyType, response, others) {
   let formatRes = {
     keyType, // 模型类型
     model: '', // 调用模型名称
@@ -13,20 +13,21 @@ export function unifiedFormattingResponse(keyType, response, others){
       prompt_tokens: 0, //提问token
       completion_tokens: 0, // 回答token
       total_tokens: 0, // 总消耗token
-    }
-  }
+    },
+  };
+  console.log('response', response);
   /* openai */
-  if([1].includes(Number(keyType))){
-    const { model, parentMessageId } = response?.detail
-    let { usage } = response?.detail
-    if(!usage){
+  if ([1].includes(Number(keyType))) {
+    const { model, parentMessageId } = response?.detail;
+    let { usage } = response?.detail;
+    if (!usage) {
       usage = {
         prompt_tokens: 0,
         completion_tokens: 0,
-        total_tokens: 0
-      }
+        total_tokens: 0,
+      };
     }
-    const { prompt_tokens, completion_tokens, total_tokens } = usage
+    const { prompt_tokens, completion_tokens, total_tokens } = usage;
     formatRes = {
       keyType,
       model,
@@ -35,16 +36,16 @@ export function unifiedFormattingResponse(keyType, response, others){
       usage: {
         prompt_tokens,
         completion_tokens,
-        total_tokens
-      }
-    }
+        total_tokens,
+      },
+    };
   }
 
   /* 百度 */
-  if([2, 3, 4].includes(Number(keyType))) {
-    const { usage, text } = response
-    const { prompt_tokens, completion_tokens, total_tokens } = usage
-    const { model, parentMessageId } = others
+  if ([2, 3, 4].includes(Number(keyType))) {
+    const { usage, text } = response;
+    const { prompt_tokens, completion_tokens, total_tokens } = usage;
+    const { model, parentMessageId } = others;
     formatRes = {
       keyType,
       model,
@@ -53,9 +54,9 @@ export function unifiedFormattingResponse(keyType, response, others){
       usage: {
         prompt_tokens,
         completion_tokens,
-        total_tokens
-      }
-    }
+        total_tokens,
+      },
+    };
   }
 
   return formatRes;

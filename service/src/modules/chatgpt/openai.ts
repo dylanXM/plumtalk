@@ -61,6 +61,7 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
           /* 如果结束 返回所有 */
           if (data === '[DONE]' || ISEND) {
             result.text = result.text.trim();
+            lastString = '';
             return result;
           }
           try {
@@ -81,7 +82,7 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
             }
             onProgress && onProgress({ text: result.text });
           } catch (error) {
-            console.log('parse error: ', data);
+            console.log('parse error: ', error);
             lastString += data;
           }
         }
@@ -99,9 +100,12 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
             estimated: true,
           };
         }
+        lastString = '';
+        console.log('stream end: ', result);
         return resolve(result);
       });
     } catch (error) {
+      lastString = '';
       reject(error);
     }
   });
