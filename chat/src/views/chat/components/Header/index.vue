@@ -212,11 +212,11 @@ function handleSignIn() {
     <!-- <NPopover :show="showModelPopover">
       <template #trigger> -->
     <!-- TODO 这是模型选择，有可能要放开 -->
-    <!-- <div class="absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap cursor-pointer select-none rounded-b-md border bg-white px-4 dark:border-neutral-700 dark:bg-[#111114] flex items-center hover:text-[#5a91fc] transition" @click="handleOpenModelDialog">
-					<SvgIcon  class="text-base mr-2" icon="fluent:flash-sparkle-20-regular" />
-          {{ modelName }}
-          <SvgIcon class="text-2xl" :icon="useGlobalStore.modelDialog ? 'ri:arrow-down-s-line' : 'ri:arrow-right-s-line'" />
-        </div> -->
+    <div class="absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap cursor-pointer select-none rounded-b-md border bg-white px-4 dark:border-neutral-700 dark:bg-[#111114] flex items-center hover:text-[#5a91fc] transition" @click="handleOpenModelDialog">
+      <SvgIcon class="text-base mr-2" icon="fluent:flash-sparkle-20-regular" />
+      {{ modelName }}
+      <SvgIcon class="text-2xl" :icon="useGlobalStore.modelDialog ? 'ri:arrow-down-s-line' : 'ri:arrow-right-s-line'" />
+    </div>
     <!-- </template>
       <template #header>
         <span class="cursor-pointer  hover:text-[#3076fd]" @click="handleChangeMode(3)">

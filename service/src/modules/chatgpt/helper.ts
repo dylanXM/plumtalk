@@ -18,8 +18,8 @@ export function unifiedFormattingResponse(keyType, response, others) {
   console.log('response', response);
   /* openai */
   if ([1].includes(Number(keyType))) {
-    const { model, parentMessageId } = response?.detail;
-    let { usage } = response?.detail;
+    const { model, parentMessageId } = response?.detail || {};
+    let { usage } = response?.detai || {};
     if (!usage) {
       usage = {
         prompt_tokens: 0,
