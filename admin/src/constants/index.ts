@@ -246,6 +246,7 @@ export const MODELTYPELIST = [
   { value: 2, label: '百度 - [千帆大模型]' },
   { value: 3, label: '清华 - [智谱大模型]' },
   { value: 4, label: '系统模型' },
+  { value: 5, label: 'kimi' },
 ]
 
 export const MODELSMAP = {
@@ -253,6 +254,7 @@ export const MODELSMAP = {
   2: '百度文心',
   3: '清华智谱',
   4: '系统模型',
+  5: 'kimi',
 }
 
 export const MODELSMAPLIST = {
@@ -292,6 +294,9 @@ export const MODELSMAPLIST = {
     'glm-4v',
     'glm-3-turbo',
   ],
+  5: [
+    'kimi',
+  ],
 }
 
 /* 扣费类型  普通余额还是高级余额 */
@@ -306,4 +311,5 @@ export const ModelTypeLabelMap = {
   2: 'client_id',
   3: 'AppKey',
   4: 'AppKey',
+  5: 'refresh_token',
 }

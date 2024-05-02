@@ -25,10 +25,14 @@ export class SetModelTypeDto {
   @ApiProperty({ example: true, description: '单次扣除金额', required: false })
   deduct: number;
 
-  @ApiProperty({ example: true, description: '排序id 越大越靠前', default : 100 })
+  @ApiProperty({ example: true, description: '排序id 越大越靠前', default: 100 })
   order: number;
 
-  @ApiProperty({ example: 4000, description: '模型允许用户使用的最大token设置过高意味着单次的上下文会很高控制模型上下文控制使用token数量', required: true })
+  @ApiProperty({
+    example: 4000,
+    description: '模型允许用户使用的最大token设置过高意味着单次的上下文会很高控制模型上下文控制使用token数量',
+    required: true,
+  })
   maxTokens: number;
 
   @ApiProperty({ example: 1000, description: '模型支持的最大回复TOken数量', required: true })

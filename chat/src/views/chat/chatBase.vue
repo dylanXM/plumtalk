@@ -305,7 +305,7 @@ async function onConversation(msg?: string) {
           const { responseText } = xhr
 
           /* 这种解析只对openai有效 其他的会漏掉前面的字 */
-          if ([1].includes(activeModelKeyType.value)) {
+          if ([1, 5].includes(activeModelKeyType.value)) {
             const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
             let chunk = responseText
             if (lastIndex !== -1)
@@ -349,7 +349,7 @@ async function onConversation(msg?: string) {
 
           try {
             /* 如果出现输出内容不一致就需要处理了 */
-            if (activeModelKeyType.value === 1) {
+            if ([1, 5].includes(activeModelKeyType.value)) {
               cacheResText = data.text
               if (data?.userBanance)
                 userBanance = data?.userBanance

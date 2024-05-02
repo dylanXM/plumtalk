@@ -10,6 +10,6 @@ import { ModelsTypeEntity } from './modelType.entity';
   imports: [TypeOrmModule.forFeature([ModelsEntity, ModelsTypeEntity])],
   controllers: [ModelsController],
   providers: [ModelsService],
-  exports: [ModelsService]
+  exports: [ModelsService],
 })
 export class ModelsModule {}

@@ -43,7 +43,7 @@ import { ChatBoxTypeEntity } from './chatBoxType.entity';
 import { ChatBoxEntity } from './chatBox.entity';
 import { ChatPreEntity } from './chatPre.entity';
 import { ChatPreTypeEntity } from './chatPreType.entity';
-import { ZhipuAI } from 'zhipuai-sdk-nodejs-v4';
+import { sendMessageFromKimi } from './kimi';
 
 interface Key {
   id: number;
@@ -393,6 +393,35 @@ export class ChatgptService implements OnModuleInit {
               res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
               firstChunk = false;
               lastChat = data;
+            },
+          });
+          isSuccess = true;
+        }
+
+        /** kimi */
+        if (Number(keyType) === 5) {
+          const { key, maxToken, maxTokenRes, proxyResUrl } = await this.formatModelToken(currentRequestModelKey);
+          const { parentMessageId, completionParams, systemMessage } = mergedOptions;
+          const { model, temperature } = completionParams;
+          const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
+            parentMessageId,
+            systemMessage,
+            maxModelToken: maxToken,
+            maxResponseTokens: maxTokenRes,
+            maxRounds: addOneIfOdd(rounds),
+          });
+          let firstChunk = true;
+          response = await sendMessageFromKimi(messagesHistory, {
+            maxToken,
+            maxTokenRes,
+            apiKey: modelKey,
+            model,
+            temperature,
+            proxyUrl: proxyResUrl,
+            onProgress: (chat) => {
+              res.write(firstChunk ? JSON.stringify(chat) : `\n${JSON.stringify(chat)}`);
+              lastChat = chat;
+              firstChunk = false;
             },
           });
           isSuccess = true;

@@ -10,7 +10,7 @@ export class ModelsEntity extends BaseEntity {
   @Column({ comment: '模型名称' })
   modelName: string;
 
-  @Column({ comment: '模型的key'})
+  @Column({ comment: '模型的key' })
   key: string;
 
   @Column({ comment: '模型的secret', default: null })
@@ -53,13 +53,13 @@ export class ModelsEntity extends BaseEntity {
   deduct: number;
 
   @Column({ comment: '扣除余额类型 1： 普通模型 2：高级模型', default: 1 })
-  deductType: number
+  deductType: number;
 
   @Column({ comment: '备注信息', nullable: true })
-  remark: string
+  remark: string;
 
   @Column({ comment: '限制用户上下文最大次数', nullable: true })
-  maxRounds: number
+  maxRounds: number;
 
   @Column({ comment: '是否是绘画key: 0:不是 1：是', default: 0 })
   isDraw: boolean;
