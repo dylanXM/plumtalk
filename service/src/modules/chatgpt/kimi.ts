@@ -29,16 +29,14 @@ export function sendMessageFromKimi(messagesHistory, inputs) {
   const options: AxiosRequestConfig = {
     method: 'POST',
     url: `${getFullUrl(proxyUrl)}/chat/completions`,
-    responseType: 'stream',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     data: {
       max_tokens,
-      stream: true,
       temperature,
-      model: 'silent_search',
+      model: 'kimi',
       messages: messagesHistory,
       use_search: true,
     },
@@ -47,66 +45,20 @@ export function sendMessageFromKimi(messagesHistory, inputs) {
   return new Promise(async (resolve, reject) => {
     try {
       const response: any = await axios(options);
-      const stream = response.data;
-      const result: any = { text: '' };
-      stream.on('data', (chunk) => {
-        const splitArr = chunk
-          .toString()
-          .split('\n\n')
-          .filter((line) => line.trim() !== '');
-        for (const line of splitArr) {
-          const data = line.replace('data:', '');
-          let ISEND = false;
-          try {
-            ISEND = JSON.parse(data).choices[0].finish_reason === 'stop';
-          } catch (error) {
-            ISEND = false;
-          }
-          /* 如果结束 返回所有 */
-          if (data === '[DONE]' || ISEND) {
-            result.text = result.text.trim();
-            lastString = '';
-            return result;
-          }
-          try {
-            const newData = lastString + data;
-            const parsedData = JSON.parse(newData);
-            lastString = '';
-            if (parsedData.id) {
-              result.id = parsedData.id;
-            }
-            if (parsedData.choices?.length) {
-              const delta = parsedData.choices[0].delta;
-              result.delta = delta.content;
-              if (delta?.content) result.text += delta.content;
-              if (delta.role) {
-                result.role = delta.role;
-              }
-              result.detail = parsedData;
-            }
-            onProgress && onProgress({ text: result.text });
-          } catch (error) {
-            console.log('parse error: ', error);
-            lastString += data;
-          }
-        }
-      });
+      console.log('response: ', response.data.choices[0]);
+      const data = response.data;
+      const text = data.choices[0]?.message?.content || '';
+      const result = { text, detail: { usage: null } };
 
-      stream.on('end', () => {
-        // 手动计算token
-        if (result.detail && result.text) {
-          const promptTokens = getTokenCount(prompt);
-          const completionTokens = getTokenCount(result.text);
-          result.detail.usage = {
-            prompt_tokens: promptTokens,
-            completion_tokens: completionTokens,
-            total_tokens: promptTokens + completionTokens,
-            estimated: true,
-          };
-        }
-        lastString = '';
-        return resolve(result);
-      });
+      const promptTokens = getTokenCount(prompt);
+      const completionTokens = getTokenCount(text);
+      result.detail.usage = {
+        prompt_tokens: data.usage.prompt_tokens,
+        completion_tokens: data.usage.completionTokens,
+        total_tokens: promptTokens + completionTokens,
+        estimated: true,
+      };
+      return resolve(result);
     } catch (error) {
       lastString = '';
       reject(error);
