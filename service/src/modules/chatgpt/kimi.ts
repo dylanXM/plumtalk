@@ -43,7 +43,6 @@ export function sendMessageFromKimi(messagesHistory, inputs) {
       use_search: true,
     },
   };
-  console.log('current request options: ', options);
   const prompt = messagesHistory[messagesHistory.length - 1]?.content;
   return new Promise(async (resolve, reject) => {
     try {
@@ -106,7 +105,6 @@ export function sendMessageFromKimi(messagesHistory, inputs) {
           };
         }
         lastString = '';
-        console.log('stream end: ', result);
         return resolve(result);
       });
     } catch (error) {

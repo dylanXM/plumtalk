@@ -15,9 +15,8 @@ export function unifiedFormattingResponse(keyType, response, others) {
       total_tokens: 0, // 总消耗token
     },
   };
-  console.log('response', response);
   /* openai */
-  if ([1].includes(Number(keyType))) {
+  if ([1, 5].includes(Number(keyType))) {
     const { model, parentMessageId } = response?.detail || {};
     let { usage } = response?.detai || {};
     if (!usage) {
