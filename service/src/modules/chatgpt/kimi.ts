@@ -45,10 +45,9 @@ export function sendMessageFromKimi(messagesHistory, inputs) {
   return new Promise(async (resolve, reject) => {
     try {
       const response: any = await axios(options);
-      console.log('response: ', response.data.choices[0]);
       const data = response.data;
       const text = data.choices[0]?.message?.content || '';
-      const result = { text, detail: { usage: null } };
+      const result = { text, detail: { usage: null }, id: data?.id };
 
       const promptTokens = getTokenCount(prompt);
       const completionTokens = getTokenCount(text);
