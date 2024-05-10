@@ -510,7 +510,7 @@ onMounted(() => {
             </el-icon>
           </el-tooltip>
         </el-form-item>
-        <el-form-item v-if="[1, 5].includes(Number(formPackage.keyType))" label="指定代理地址" prop="proxyUrl">
+        <el-form-item v-if="[1, 5, 6, 7].includes(Number(formPackage.keyType))" label="指定代理地址" prop="proxyUrl">
           <el-input v-model.number="formPackage.proxyUrl" placeholder="如需使用代理请填写、不填写默认使用全局配置！" />
         </el-form-item>
       </el-form>

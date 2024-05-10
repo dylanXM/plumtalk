@@ -16,7 +16,7 @@ export function unifiedFormattingResponse(keyType, response, others) {
     },
   };
   /* openai */
-  if ([1, 5].includes(Number(keyType))) {
+  if ([1, 5, 6, 7].includes(Number(keyType))) {
     const { model, parentMessageId } = response?.detail || {};
     let { usage } = response?.detai || {};
     if (!usage) {

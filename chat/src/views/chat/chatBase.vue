@@ -305,7 +305,7 @@ async function onConversation(msg?: string) {
           const { responseText } = xhr
 
           /* 这种解析只对openai有效 其他的会漏掉前面的字 */
-          if ([1, 5].includes(activeModelKeyType.value)) {
+          if ([1, 5, 6, 7].includes(activeModelKeyType.value)) {
             const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
             let chunk = responseText
             if (lastIndex !== -1)
@@ -318,7 +318,6 @@ async function onConversation(msg?: string) {
               /* 二次解析 */
               // const parseData = parseTextToJSON(responseText)
               // TODO 如果出现类似超时错误 会连接上次的内容一起发出来导致无法解析  后端需要处理 下
-              console.log('parse data erro from openai: ')
               if (chunk.includes('OpenAI timed out waiting for response'))
                 ms.warning('会话超时了、告知管理员吧~~~')
             }
@@ -349,7 +348,7 @@ async function onConversation(msg?: string) {
 
           try {
             /* 如果出现输出内容不一致就需要处理了 */
-            if ([1, 5].includes(activeModelKeyType.value)) {
+            if ([1, 5, 6, 7].includes(activeModelKeyType.value)) {
               cacheResText = data.text
               if (data?.userBanance)
                 userBanance = data?.userBanance

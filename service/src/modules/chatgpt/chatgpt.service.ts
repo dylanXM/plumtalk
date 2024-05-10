@@ -44,6 +44,7 @@ import { ChatBoxEntity } from './chatBox.entity';
 import { ChatPreEntity } from './chatPre.entity';
 import { ChatPreTypeEntity } from './chatPreType.entity';
 import { sendMessageFromKimi } from './kimi';
+import { sendMessageFromGlm } from './glm';
 
 interface Key {
   id: number;
@@ -412,6 +413,35 @@ export class ChatgptService implements OnModuleInit {
           });
           let firstChunk = true;
           response = await sendMessageFromKimi(messagesHistory, {
+            maxToken,
+            maxTokenRes,
+            apiKey: modelKey,
+            model,
+            temperature,
+            proxyUrl: proxyResUrl,
+            onProgress: (chat) => {
+              res.write(firstChunk ? JSON.stringify(chat) : `\n${JSON.stringify(chat)}`);
+              lastChat = chat;
+              firstChunk = false;
+            },
+          });
+          isSuccess = true;
+        }
+
+        /** glm */
+        if (Number(keyType) === 6) {
+          const { key, maxToken, maxTokenRes, proxyResUrl } = await this.formatModelToken(currentRequestModelKey);
+          const { parentMessageId, completionParams, systemMessage } = mergedOptions;
+          const { model, temperature } = completionParams;
+          const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
+            parentMessageId,
+            systemMessage,
+            maxModelToken: maxToken,
+            maxResponseTokens: maxTokenRes,
+            maxRounds: addOneIfOdd(rounds),
+          });
+          let firstChunk = true;
+          response = await sendMessageFromGlm(messagesHistory, {
             maxToken,
             maxTokenRes,
             apiKey: modelKey,
