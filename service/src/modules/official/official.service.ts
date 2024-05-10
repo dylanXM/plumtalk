@@ -176,8 +176,8 @@ export class OfficialService {
 
   // 根据微信code获取openId,sessionKey等信息
   async getWechatSession(code: string) {
-    const appId = 'wx81c4c212b7f5bfc7';
-    const secret = '0e37f49ce6828e16d165c7d5f47ab7c2';
+    const appId = 'wx65e85cbc47fb06e1';
+    const secret = 'f858b6ff6fd256071673643b1393bdea';
     const res = await axios.get(
       `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
     );
