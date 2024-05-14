@@ -13,7 +13,7 @@ interface SendMessageResult {
 
 function getFullUrl(proxyUrl = '') {
   const processedUrl = proxyUrl.endsWith('/') ? proxyUrl.slice(0, -1) : proxyUrl;
-  const baseUrl = processedUrl || 'http://172.245.57.223:8030/v1';
+  const baseUrl = processedUrl || 'http://172.245.57.223:8020/v1';
   return baseUrl;
 }
 
@@ -34,9 +34,10 @@ export function sendMessageFromGlm(messagesHistory, inputs) {
       Authorization: `Bearer ${token}`,
     },
     data: {
+      id: '66402bcb73e16cd2f8b1bcec',
       max_tokens,
       temperature,
-      model: 'kimi',
+      model: '66402bcb73e16cd2f8b1bcec',
       messages: messagesHistory,
       use_search: true,
     },
