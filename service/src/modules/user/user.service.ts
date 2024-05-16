@@ -281,6 +281,24 @@ export class UserService {
     return '修改用户信息成功！';
   }
 
+  /* 修改用户名和头像 */
+  async updateUserNameAndAvatar(body: UpdateUserDto, req: Request) {
+    const { id } = req.user;
+    const { username, avatar } = body;
+    const u = await this.userEntity.findOne({ where: { id } });
+    if (!u) {
+      throw new HttpException('当前用户不存在！', HttpStatus.BAD_REQUEST);
+    }
+    if (u.username === username && u.avatar === avatar) {
+      throw new HttpException('没有变更，无需更改！', HttpStatus.BAD_REQUEST);
+    }
+    const r = await this.userEntity.update({ id }, body);
+    if (r.affected <= 0) {
+      throw new HttpException('修改用户名和头像失败！', HttpStatus.BAD_REQUEST);
+    }
+    return '修改用户名和头像成功！';
+  }
+
   /* 修改用户密码 */
   async updateUserPassword(userId: number, password: string) {
     const hashedPassword = bcrypt.hashSync(password, 10);

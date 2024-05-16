@@ -27,6 +27,14 @@ export class UserController {
     return await this.userService.updateInfo(body, req);
   }
 
+  @Post('updateUserNameAndAvatar')
+  @ApiOperation({ summary: '更新用户名和头像' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async updateUserNameAndAvatar(@Body() body: UpdateUserDto, @Req() req: Request) {
+    return await this.userService.updateUserNameAndAvatar(body, req);
+  }
+
   @Post('genInviteCode')
   @ApiOperation({ summary: '生成邀请码' })
   @UseGuards(JwtAuthGuard)
