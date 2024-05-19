@@ -66,6 +66,22 @@ export function sendMessageFromGlm(messagesHistory, inputs) {
   });
 }
 
+export async function drawImageFromGlm(prompt) {
+  const options: AxiosRequestConfig = {
+    method: 'POST',
+    url: `${getFullUrl()}/images/generations`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      prompt,
+      model: 'cogview-3',
+    },
+  };
+  console.log('options: ', options);
+  return axios(options);
+}
+
 export function getTokenCount(text = '') {
   if (!text) return 0;
   text = text.replace(/<\|endoftext\|>/g, '');

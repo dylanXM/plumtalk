@@ -44,7 +44,7 @@ import { ChatBoxEntity } from './chatBox.entity';
 import { ChatPreEntity } from './chatPre.entity';
 import { ChatPreTypeEntity } from './chatPreType.entity';
 import { sendMessageFromKimi } from './kimi';
-import { sendMessageFromGlm } from './glm';
+import { drawImageFromGlm, sendMessageFromGlm } from './glm';
 
 interface Key {
   id: number;
@@ -672,6 +672,7 @@ export class ChatgptService implements OnModuleInit {
       const api = `${proxyResUrl}/images/generations`;
       const params = { ...body, model: 'dall-e-3' };
       console.log('dall-e draw params: ', params);
+      // const res = await drawImageFromGlm(body.prompt);
       const res = await axios.post(api, { ...params, response_format: 'b64_json' }, { headers: { Authorization: `Bearer ${key}` } });
       images = res.data.data;
       const task = [];
@@ -682,7 +683,7 @@ export class ChatgptService implements OnModuleInit {
       }
       const urls = await Promise.all(task);
       /* 绘制openai的dall-e2绘画也扣除的是绘画积分次数 */
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', params?.quality === 'standard' ? 2 : 4, money);
+      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', params?.quality === 'standard' ? 5 : 10, money);
       const curIp = getClientIp(req);
       const taskLog = [];
       const cosType = await this.uploadService.getUploadType();
