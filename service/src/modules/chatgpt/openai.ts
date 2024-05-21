@@ -82,7 +82,7 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
             }
             onProgress && onProgress({ text: result.text });
           } catch (error) {
-            console.log('parse error: ', error);
+            console.log('parse error: ', data, lastString + data);
             lastString += data;
           }
         }
