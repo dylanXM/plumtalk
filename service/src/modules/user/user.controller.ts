@@ -65,6 +65,13 @@ export class UserController {
     return await this.userService.userRecharge(body);
   }
 
+  @Post('advcharge')
+  @ApiOperation({ summary: '用户充值' })
+  @ApiBearerAuth()
+  async advcharge(@Body() body: UserRechargeDto) {
+    return await this.userService.userRecharge(body);
+  }
+
   @Get('queryAll')
   @ApiOperation({ summary: '查询所有用户' })
   @UseGuards(AdminAuthGuard)
