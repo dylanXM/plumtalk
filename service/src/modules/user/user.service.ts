@@ -235,7 +235,7 @@ export class UserService {
   async getUserInfo(userId: number) {
     const userInfo: any = await this.userEntity.findOne({
       where: { id: userId },
-      select: ['username', 'avatar', 'role', 'email', 'sign', 'inviteCode', 'openId', 'consecutiveDays'],
+      select: ['username', 'avatar', 'role', 'email', 'sign', 'inviteCode', 'openId', 'consecutiveDays', 'id'],
     });
     if (!userInfo) {
       throw new HttpException('当前用户信息失效、请重新登录！', HttpStatus.UNAUTHORIZED);
