@@ -105,4 +105,10 @@ export class AuthController {
   async registerOrLoginByWechat(@Body() body: { openId: string; avatar: string }, @Req() req: Request) {
     return this.authService.registerOrLoginByWechat(body, req);
   }
+
+  @Post('updateUserInfoUseEmail')
+  @ApiOperation({ summary: '将用户邮箱更新至用户信息中' })
+  async updateUserInfoUseEmail(@Body() body: { email: string; password: string }, @Req() req: Request) {
+    return this.authService.updateUserInfoUseEmail(body, req);
+  }
 }

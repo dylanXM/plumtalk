@@ -281,4 +281,11 @@ export class AuthService {
     const newUser = await this.userService.createUserFromOpenId(body.openId, '', body.avatar);
     return this.loginByOpenId(newUser, req);
   }
+
+  /* 将用户邮箱更新至用户信息中 */
+  async updateUserInfoUseEmail(body, req) {
+    const { email, password } = body;
+    await this.userService.updateUserInfoUseEmail(email, password);
+    return '邮箱更新成功';
+  }
 }

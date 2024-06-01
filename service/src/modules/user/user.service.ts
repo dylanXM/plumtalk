@@ -532,4 +532,24 @@ export class UserService {
   async createUser(userInfo) {
     return await this.userEntity.save(userInfo);
   }
+
+  /* 将用户的邮箱更新至用户信息中 */
+  async updateUserInfoUseEmail(body: { email: string; password: string }, req: Request) {
+    const { email, password } = body;
+    const { id } = req.user;
+    const emailUser = await this.userEntity.findOne({ where: { email } });
+    const user = await this.userEntity.findOne({ where: { id } });
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    if (emailUser && emailUser.password !== hashedPassword) {
+      throw new HttpException('邮箱已被绑定！', HttpStatus.BAD_REQUEST);
+    }
+    if (emailUser && emailUser.password === hashedPassword) {
+      // 原
+    }
+    const r = await this.userEntity.update({ id }, { email, password: hashedPassword });
+    if (r.affected <= 0) {
+      throw new HttpException('更新用户邮箱失败！', HttpStatus.BAD_REQUEST);
+    }
+    return '更新用户邮箱成功！';
+  }
 }
