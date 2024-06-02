@@ -538,15 +538,27 @@ export class UserService {
     const { email, password } = body;
     const { id } = req.user;
     const emailUser = await this.userEntity.findOne({ where: { email } });
-    const user = await this.userEntity.findOne({ where: { id } });
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    if (emailUser && emailUser.password !== hashedPassword) {
+    if (emailUser && emailUser.email === email) {
+      throw new HttpException('同一用户无需修改！', HttpStatus.BAD_REQUEST);
+    }
+    const isPasswordEqual = bcrypt.compareSync(password, emailUser.password);
+    if ((emailUser && !isPasswordEqual) || emailUser.openId) {
       throw new HttpException('邮箱已被绑定！', HttpStatus.BAD_REQUEST);
     }
-    if (emailUser && emailUser.password === hashedPassword) {
-      // 原
+    if (emailUser && isPasswordEqual) {
+      // 如果邮箱已经绑定过了，将用户的邮箱更新至用户信息中
+      /**
+       * 1. 将用户的邮箱更新至当前信息中
+       * 2. 将原用户的积分更新到当前用户信息中
+       * 3. 删除原用户信息
+       */
+      const { id: emailUserId } = emailUser;
+      const emailUserBalance = await this.userBalanceService.queryUserBalance(emailUserId);
+      await this.userBalanceService.addBalanceToUser(id, emailUserBalance);
+      await this.userEntity.delete({ id: emailUserId });
     }
-    const r = await this.userEntity.update({ id }, { email, password: hashedPassword });
+    const r = await this.userEntity.update({ id }, { email });
+    console.log('r: ', r, req.user);
     if (r.affected <= 0) {
       throw new HttpException('更新用户邮箱失败！', HttpStatus.BAD_REQUEST);
     }

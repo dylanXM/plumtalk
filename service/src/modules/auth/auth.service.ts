@@ -284,8 +284,6 @@ export class AuthService {
 
   /* 将用户邮箱更新至用户信息中 */
   async updateUserInfoUseEmail(body, req) {
-    const { email, password } = body;
-    await this.userService.updateUserInfoUseEmail(email, password);
-    return '邮箱更新成功';
+    return await this.userService.updateUserInfoUseEmail(body, req);
   }
 }

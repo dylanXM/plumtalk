@@ -68,7 +68,7 @@ export class UserBalanceService {
     private readonly salesService: SalesService,
     private readonly globalConfigService: GlobalConfigService,
   ) {}
-  
+
   /* 新注册用户赠送消费 */
   async addBalanceToNewUser(userId: number, invitedId: number) {
     try {
@@ -164,98 +164,100 @@ export class UserBalanceService {
 
   /* 检查余额 */
   async validateBalance(req, type, amount) {
-      const { id: userId, role } = req.user
-      let b = await this.userBalanceEntity.findOne({ where: { userId } });
-      if (!b) {
-        b = await this.createBaseUserBalance(userId);
-      }
-      if(role === 'visitor'){
-        return this.validateVisitorBalance(req, type, amount)
-      }
-      const res: ConfigEntity = await this.configEntity.findOne({ where: { configKey: 'vxNumber' } });
-      const vxNumber = res ? res.configVal : '---';
-      /* 会员扣费key */
-      const memberKey =
-        type === 'model3' ? 'memberModel3Count' : type === 'model4' ? 'memberModel4Count' : type === 'mjDraw' ? 'memberDrawMjCount' : null;
-      /* 非会员扣费key */
-      const baseKey = type === 'model3' ? 'model3Count' : type === 'model4' ? 'model4Count' : type === 'mjDraw' ? 'drawMjCount' : null;
-      /* 如果是会员 */
-      if (b.packageId && b[memberKey] < amount) {
-        if (b[baseKey] < amount) {
-          throw new HttpException(`您的账户余额不足,如果想继续体验服务,请联系管理员 <VX: ${vxNumber}> 或购买专属套餐 ！`, HttpStatus.PAYMENT_REQUIRED);
-        }
-      }
-      /* 如果不是会员 */
-      if (!b.packageId && b[baseKey] < amount) {
+    const { id: userId, role } = req.user;
+    let b = await this.userBalanceEntity.findOne({ where: { userId } });
+    if (!b) {
+      b = await this.createBaseUserBalance(userId);
+    }
+    if (role === 'visitor') {
+      return this.validateVisitorBalance(req, type, amount);
+    }
+    const res: ConfigEntity = await this.configEntity.findOne({ where: { configKey: 'vxNumber' } });
+    const vxNumber = res ? res.configVal : '---';
+    /* 会员扣费key */
+    const memberKey =
+      type === 'model3' ? 'memberModel3Count' : type === 'model4' ? 'memberModel4Count' : type === 'mjDraw' ? 'memberDrawMjCount' : null;
+    /* 非会员扣费key */
+    const baseKey = type === 'model3' ? 'model3Count' : type === 'model4' ? 'model4Count' : type === 'mjDraw' ? 'drawMjCount' : null;
+    /* 如果是会员 */
+    if (b.packageId && b[memberKey] < amount) {
+      if (b[baseKey] < amount) {
         throw new HttpException(`您的账户余额不足,如果想继续体验服务,请联系管理员 <VX: ${vxNumber}> 或购买专属套餐 ！`, HttpStatus.PAYMENT_REQUIRED);
       }
-      return b;
-  
+    }
+    /* 如果不是会员 */
+    if (!b.packageId && b[baseKey] < amount) {
+      throw new HttpException(`您的账户余额不足,如果想继续体验服务,请联系管理员 <VX: ${vxNumber}> 或购买专属套餐 ！`, HttpStatus.PAYMENT_REQUIRED);
+    }
+    return b;
   }
 
   /* 检查游客的余额 */
- async validateVisitorBalance(req, type, amount){
-    const {id} = req.user
+  async validateVisitorBalance(req, type, amount) {
+    const { id } = req.user;
     const baseKey = type === 'model3' ? 'model3Count' : type === 'model4' ? 'model4Count' : type === 'mjDraw' ? 'drawMjCount' : null;
     const now = new Date();
-    const log = await this.fingerprintLogEntity.findOne({where: {fingerprint: id}})
+    const log = await this.fingerprintLogEntity.findOne({ where: { fingerprint: id } });
     /* 判断余额 */
-    const {visitorModel3Num,visitorModel4Num,visitorMJNum} = await this.globalConfigService.getConfigs(['visitorModel3Num','visitorModel4Num','visitorMJNum'])
+    const { visitorModel3Num, visitorModel4Num, visitorMJNum } = await this.globalConfigService.getConfigs([
+      'visitorModel3Num',
+      'visitorModel4Num',
+      'visitorMJNum',
+    ]);
     const settings = {
       model3Count: visitorModel3Num ? Number(visitorModel3Num) : 0,
       model4Count: visitorModel4Num ? Number(visitorModel4Num) : 0,
-      drawMjCount: visitorMJNum ? Number(visitorMJNum) : 0
-    }
+      drawMjCount: visitorMJNum ? Number(visitorMJNum) : 0,
+    };
     /* 如果没有 */
-    if(!log){
-      let data = {
+    if (!log) {
+      const data = {
         fingerprint: id,
         model3Count: 0,
         model4Count: 0,
-        drawMjCount: 0
-      }
-      data[baseKey] = data[baseKey] + amount
+        drawMjCount: 0,
+      };
+      data[baseKey] = data[baseKey] + amount;
       /* 判断余额 */
-      if(data[baseKey] > settings[baseKey]){
+      if (data[baseKey] > settings[baseKey]) {
         throw new HttpException(`今日当前类型免费额度已经使用完毕、建议您注册账户体验更加完整的服务内容！`, HttpStatus.PAYMENT_REQUIRED);
-      }else{
-        await this.fingerprintLogEntity.save(data)
-        return true
+      } else {
+        await this.fingerprintLogEntity.save(data);
+        return true;
       }
-    }else{
-      const { model3Count, model4Count, drawMjCount } = log
+    } else {
+      const { model3Count, model4Count, drawMjCount } = log;
       let data = {
         model3Count,
         model4Count,
-        drawMjCount
-      }
+        drawMjCount,
+      };
       /* 判断是否是昨天 */
       // const isUpdateLastDay = this.isUpdatedToday(log.updatedAt)
       // const date = Number(new Date(log.updatedAt)) + 8 * 60 * 60 * 1000
-      const date = Number(new Date(log.updatedAt))
-      const isUpdateLastDay = this.isUpdatedToday(date)
-      if(isUpdateLastDay){
-        data[baseKey] = data[baseKey] + amount
-      }else{
+      const date = Number(new Date(log.updatedAt));
+      const isUpdateLastDay = this.isUpdatedToday(date);
+      if (isUpdateLastDay) {
+        data[baseKey] = data[baseKey] + amount;
+      } else {
         data = {
           model3Count: 0,
           model4Count: 0,
-          drawMjCount: 0
-        }
-        data[baseKey] = data[baseKey] + amount
+          drawMjCount: 0,
+        };
+        data[baseKey] = data[baseKey] + amount;
       }
-      if(data[baseKey] > settings[baseKey]){
+      if (data[baseKey] > settings[baseKey]) {
         throw new HttpException(`今日当前类型免费额度已经使用完毕、建议您注册账户体验更加完整的服务内容！`, HttpStatus.PAYMENT_REQUIRED);
-      }else{
-        await this.fingerprintLogEntity.update({ fingerprint: id }, data)
-        return true
+      } else {
+        await this.fingerprintLogEntity.update({ fingerprint: id }, data);
+        return true;
       }
     }
   }
 
-
   /* 判读上次更新是不是今天  */
-  isUpdatedToday (date) {
+  isUpdatedToday(date) {
     const now = new Date();
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     return date >= todayStart;
@@ -513,7 +515,7 @@ export class UserBalanceService {
       const { role } = req.user;
       const where: any = {};
       rechargeType && (where.rechargeType = rechargeType);
-      where.userId = userId || LessThan(100000)
+      where.userId = userId || LessThan(100000);
       packageId && (where.packageId = { $like: `%${packageId}%` });
       const [rows, count] = await this.accountLogEntity.findAndCount({
         where,
@@ -550,8 +552,7 @@ export class UserBalanceService {
   }
 
   /* MJ绘画失败退款 */
-  async refundMjBalance(userId, amount) {
-  }
+  async refundMjBalance(userId, amount) {}
 
   /* V1.5升级将旧版本余额并入到新表 */
   async upgradeBalance() {
@@ -605,20 +606,20 @@ export class UserBalanceService {
     }
   }
 
-  async inheritVisitorData(req: Request){
-    const { fingerprint } = req.headers
-    const { id: userId } = req.user
-    await this.chatLogEntity.update({userId: Number(fingerprint)}, { userId })
-    await this.chatGroupEntity.update({userId: Number(fingerprint)}, { userId })
-    await this.midjourneyEntity.update({userId: Number(fingerprint)}, { userId })
-    return 1
+  async inheritVisitorData(req: Request) {
+    const { fingerprint } = req.headers;
+    const { id: userId } = req.user;
+    await this.chatLogEntity.update({ userId: Number(fingerprint) }, { userId });
+    await this.chatGroupEntity.update({ userId: Number(fingerprint) }, { userId });
+    await this.midjourneyEntity.update({ userId: Number(fingerprint) }, { userId });
+    return 1;
   }
 
-  async getVisitorCount(req){
-    const { fingerprint } = req.headers
-    const countChat = await this.chatLogEntity.count({where: {userId: fingerprint}})
-    const countChatGroup = await this.chatGroupEntity.count({where: {userId: fingerprint}})
-    const countMj = await this.midjourneyEntity.count({where: {userId: fingerprint}})
-    return countChat || countChatGroup || countMj || 0
+  async getVisitorCount(req) {
+    const { fingerprint } = req.headers;
+    const countChat = await this.chatLogEntity.count({ where: { userId: fingerprint } });
+    const countChatGroup = await this.chatGroupEntity.count({ where: { userId: fingerprint } });
+    const countMj = await this.midjourneyEntity.count({ where: { userId: fingerprint } });
+    return countChat || countChatGroup || countMj || 0;
   }
 }

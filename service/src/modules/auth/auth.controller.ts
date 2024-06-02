@@ -108,7 +108,10 @@ export class AuthController {
 
   @Post('updateUserInfoUseEmail')
   @ApiOperation({ summary: '将用户邮箱更新至用户信息中' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async updateUserInfoUseEmail(@Body() body: { email: string; password: string }, @Req() req: Request) {
+    console.log('updateUserInfoUseEmail');
     return this.authService.updateUserInfoUseEmail(body, req);
   }
 }
