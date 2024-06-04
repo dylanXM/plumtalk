@@ -386,6 +386,8 @@ export class UserBalanceService {
         if (!pkgInfo) {
           throw new HttpException('当前套餐不存在！', HttpStatus.BAD_REQUEST);
         }
+        console.log('pkgInfo: ', pkgInfo);
+        console.log('userBalanceInfo: ', userBalanceInfo);
         const { weight } = pkgInfo; // 套餐的权重 = 会员等级
         /* 如果不是会员那么则直接充值进入并修改会员信息为会员身份 */
         if (!userBalanceInfo.packageId) {
@@ -401,9 +403,10 @@ export class UserBalanceService {
         } else {
           /* 我当前使用的套餐信息 */
           const curPackageInfo = await this.cramiPackageEntity.findOne({ where: { id: userBalanceInfo.packageId } });
+          console.log('curPackageInfo: ', curPackageInfo);
           /* 如果是会员则  充值更高或当前等级的套餐会进行时间覆盖充值余额叠加  充值低等级套餐只会叠加次数 不更新到期时间 */
           /* pkgLevel： 我当前的套餐等级 weight： 充值套餐的等级高于或等于当前套餐 则叠加时间并合并额度 */
-          if (weight >= curPackageInfo.weight) {
+          if (weight >= curPackageInfo?.weight) {
             params = {
               memberModel3Count: memberModel3Count + balance.model3Count,
               memberModel4Count: memberModel4Count + balance.model4Count,
@@ -415,7 +418,7 @@ export class UserBalanceService {
             };
           }
           /* 如果充值套餐小于当前套餐等级 只叠加次数 不延长时间 也不变更会员等级 */
-          if (weight < curPackageInfo.weight) {
+          if (weight < curPackageInfo?.weight) {
             params = {
               memberModel3Count: memberModel3Count + balance.model3Count,
               memberModel4Count: memberModel4Count + balance.model4Count,
