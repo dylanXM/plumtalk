@@ -152,12 +152,12 @@ onMounted(() => {
           </div>
           <b class="text-3xl text-[#555]">{{ userBalance.sumModel3Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
         </NGridItem>
-<!--        <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">-->
-<!--          <div class="text-[#95aac9] mb-2 text-base">-->
-<!--            高级模型余额-->
-<!--          </div>-->
-<!--          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>-->
-<!--        </NGridItem>-->
+        <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
+          <div class="text-[#95aac9] mb-2 text-base">
+            高级模型余额
+          </div>
+          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
+        </NGridItem>
         <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
           <div class="text-[#95aac9] mb-2 text-base">
             绘画余额
@@ -205,10 +205,10 @@ onMounted(() => {
                   <span class="text-sm font-bold mr-1">基础模型额度</span>
                   <span class="font-bold">{{ item.model3Count }}</span>
                 </div>
-<!--                <div class="flex justify-between items-end min-h-28">-->
-<!--                  <span class="text-sm font-bold mr-1">高级模型额度</span>-->
-<!--                  <span class="font-bold">{{ item.model4Count }}</span>-->
-<!--                </div>-->
+                <!--                <div class="flex justify-between items-end min-h-28"> -->
+                <!--                  <span class="text-sm font-bold mr-1">高级模型额度</span> -->
+                <!--                  <span class="font-bold">{{ item.model4Count }}</span> -->
+                <!--                </div> -->
                 <div class="flex justify-between items-end min-h-28">
                   <span class="text-sm font-bold mr-1">MJ绘画额度</span>
                   <span class="font-bold">{{ item.drawMjCount }}</span>
