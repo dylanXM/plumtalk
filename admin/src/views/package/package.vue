@@ -342,9 +342,9 @@ onMounted(() => {
             <el-form-item label="基础模型积分" prop="model3Count">
               <el-input v-model.number="formPackage.model3Count" type="number" placeholder="基础模型积分" />
             </el-form-item>
-            <!--            <el-form-item label="高级模型积分" prop="model4Count"> -->
-            <!--              <el-input v-model.number="formPackage.model4Count" type="number" placeholder="高级模型积分" /> -->
-            <!--            </el-form-item> -->
+            <el-form-item label="高级模型积分" prop="model4Count">
+              <el-input v-model.number="formPackage.model4Count" type="number" placeholder="高级模型积分" />
+            </el-form-item>
             <el-form-item label="绘画模型积分" prop="drawMjCount">
               <el-input v-model.number="formPackage.drawMjCount" type="number" placeholder="绘画模型积分" />
             </el-form-item>

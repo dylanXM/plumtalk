@@ -277,9 +277,9 @@ onMounted(() => queryAllUserList())
         <el-form-item label="基础模型积分" prop="model3Count">
           <el-input v-model.number="formCrami.model3Count" type="number" placeholder="赠送基础模型积分" />
         </el-form-item>
-        <!--        <el-form-item label="高级模型积分" prop="model4Count"> -->
-        <!--          <el-input v-model.number="formCrami.model4Count" type="number" placeholder="赠送高级模型积分" /> -->
-        <!--        </el-form-item> -->
+        <el-form-item label="高级模型积分" prop="model4Count">
+          <el-input v-model.number="formCrami.model4Count" type="number" placeholder="赠送高级模型积分" />
+        </el-form-item>
         <el-form-item label="绘画额度积分" prop="drawMjCount">
           <el-input v-model.number="formCrami.drawMjCount" type="number" placeholder="赠送绘画额度积分" />
         </el-form-item>

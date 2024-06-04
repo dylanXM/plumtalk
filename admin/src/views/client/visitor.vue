@@ -17,7 +17,7 @@ const formInline = reactive({
 
 const rules = ref<FormRules>({
   visitorModel3Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的基础模型积分' }],
-  // visitorModel4Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的高级模型积分' }],
+  visitorModel4Num: [{ required: true, trigger: 'blur', message: '请填写每日限制的高级模型积分' }],
   visitorMJNum: [{ required: true, trigger: 'blur', message: '请填写每日限制的绘画额度积分' }],
 })
 

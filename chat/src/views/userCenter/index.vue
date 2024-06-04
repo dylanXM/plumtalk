@@ -10,7 +10,7 @@ import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { TitleBar } from '@/components/base'
 import { useAuthStore, useGlobalStoreWithOut } from '@/store'
 import defaultAvatar from '@/assets/avatar.png'
-import { fetchVisitorCountAPI, fetchSyncVisitorDataAPI } from '@/api/balance'
+import { fetchSyncVisitorDataAPI, fetchVisitorCountAPI } from '@/api/balance'
 import { fetchUpdateInfoAPI } from '@/api/index'
 import { t } from '@/locales'
 import type { ResData } from '@/api/types'
@@ -37,17 +37,17 @@ const btnDisabled = ref(false)
 
 const { isSmallLg, isMobile } = useBasicLayout()
 
-async function getVisitorCount(){
-	const res: ResData = await fetchVisitorCountAPI()
-	visitorCount.value = res.data || 0
+async function getVisitorCount() {
+  const res: ResData = await fetchVisitorCountAPI()
+  visitorCount.value = res.data || 0
 }
 
-async function syncVisitorData(){
-	const res: ResData =  await fetchSyncVisitorDataAPI()
-	if(res.success){
+async function syncVisitorData() {
+  const res: ResData = await fetchSyncVisitorDataAPI()
+  if (res.success)
     ms.success('已同步数据完成')
-	}
-	getVisitorCount()
+
+  getVisitorCount()
 }
 
 async function updateUserInfo(options: { avatar?: string; username?: string; sign?: string }) {
@@ -73,7 +73,7 @@ function checkRoute() {
 
 onMounted(() => {
   checkRoute()
-	getVisitorCount()
+  getVisitorCount()
 })
 
 function logOut() {
@@ -116,24 +116,24 @@ setTimeout(() => {
               {{ userBalance.useModel3Count || "0" }} 积分
             </div>
           </div>
-<!--          <div class="flex items-center space-x-4 pl-3 mt-3">-->
-<!--            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型积分:</span>-->
-<!--            <div class="w-[230px]">-->
-<!--              {{ userBalance.useModel4Count || "0" }} 积分-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="flex items-center space-x-4 pl-3 mt-3">
+            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型积分:</span>
+            <div class="w-[230px]">
+              {{ userBalance.useModel4Count || "0" }} 积分
+            </div>
+          </div>
           <div class="flex items-center space-x-4 pl-3 mt-3">
             <span class="flex-shrink-0 w-[90px] text-keft text-primary">基础模型使用:</span>
             <div class="w-[230px]">
               {{ userBalance.useModel3Token || "0" }} Token
             </div>
           </div>
-<!--          <div class="flex items-center space-x-4 pl-3 mt-3">-->
-<!--            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型使用:</span>-->
-<!--            <div class="w-[230px]">-->
-<!--              {{ userBalance.useModel4Token || "0" }} Token-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="flex items-center space-x-4 pl-3 mt-3">
+            <span class="flex-shrink-0 w-[90px] text-keft text-primary">高级模型使用:</span>
+            <div class="w-[230px]">
+              {{ userBalance.useModel4Token || "0" }} Token
+            </div>
+          </div>
           <div class="flex items-center space-x-4 pl-3 mt-3">
             <span class="flex-shrink-0 w-[90px] text-keft text-primary">绘画使用积分:</span>
             <div class="w-[230px]">
@@ -151,10 +151,10 @@ setTimeout(() => {
             </div>
           </div>
 
-					<div v-if="visitorCount > 0" class="flex items-center space-x-4 pl-3 mt-3">
+          <div v-if="visitorCount > 0" class="flex items-center space-x-4 pl-3 mt-3">
             <span class="flex-shrink-0 w-[90px] text-keft text-primary">绑定微信:</span>
             <div class="w-[230px]">
-              <NButton  text @click="syncVisitorData">
+              <NButton text @click="syncVisitorData">
                 点击同步访客数据
               </NButton>
             </div>
