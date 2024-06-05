@@ -557,7 +557,7 @@ export class UserService {
       await this.userBalanceService.addBalanceToUser(id, emailUserBalance);
       await this.userEntity.delete({ id: emailUserId });
     }
-    const r = await this.userEntity.update({ id }, { email });
+    const r = await this.userEntity.update({ id }, { email, password: emailUser.password });
     console.log('r: ', r, req.user);
     if (r.affected <= 0) {
       throw new HttpException('更新用户邮箱失败！', HttpStatus.BAD_REQUEST);

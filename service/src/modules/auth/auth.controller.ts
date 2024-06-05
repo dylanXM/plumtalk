@@ -111,7 +111,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async updateUserInfoUseEmail(@Body() body: { email: string; password: string }, @Req() req: Request) {
-    console.log('updateUserInfoUseEmail');
     return this.authService.updateUserInfoUseEmail(body, req);
   }
 }
