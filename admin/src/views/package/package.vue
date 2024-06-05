@@ -68,7 +68,7 @@ const rules = reactive<FormRules>({
   status: [{ required: true, message: '请选择套餐开启状态', trigger: 'change' }],
   days: [{ required: true, message: '请填写套餐有效期天数', trigger: 'blur' }],
   model3Count: [{ required: true, message: '请填写套餐中基础模型可使用次数', trigger: 'blur' }],
-  // model4Count: [{ required: true, message: '请填写套餐中高级模型可使用次数', trigger: 'blur' }],
+  model4Count: [{ required: true, message: '请填写套餐中高级模型可使用次数', trigger: 'blur' }],
   drawMjCount: [{ required: true, message: '请填写套餐中抽奖次数', trigger: 'blur' }],
 })
 

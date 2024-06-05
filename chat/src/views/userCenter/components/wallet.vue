@@ -73,10 +73,10 @@ const columns = computed(() => {
       title: '基础模型额度',
       key: 'model3Count',
     },
-    // {
-    //   title: '高级模型额度',
-    //   key: 'model4Count',
-    // },
+    {
+      title: '高级模型额度',
+      key: 'model4Count',
+    },
     {
       title: 'MJ绘画额度',
       key: 'drawMjCount',

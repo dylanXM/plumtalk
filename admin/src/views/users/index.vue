@@ -192,7 +192,7 @@ onMounted(() => queryAllUserList())
           </template>
         </el-table-column>
         <el-table-column prop="balanceInfo.model3Count" label="基础模型" width="120" align="center" />
-        <!--        <el-table-column prop="balanceInfo.model4Count" label="高级模型" width="120" align="center" /> -->
+        <el-table-column prop="balanceInfo.model4Count" label="高级模型" width="120" align="center" />
         <el-table-column prop="balanceInfo.drawMjCount" label="绘画余额" width="120" align="center" />expirationTime
         <el-table-column prop="balanceInfo.drawMjCount" label="会员到期时间" width="170" align="center">
           <template #default="scope">
@@ -202,18 +202,18 @@ onMounted(() => queryAllUserList())
           </template>
         </el-table-column>
         <el-table-column prop="balanceInfo.memberModel3Count" label="基础模型[会员]" width="120" align="center" />
-        <!--        <el-table-column prop="balanceInfo.memberModel4Count" label="高级模型[会员]" width="120" align="center" /> -->
+        <el-table-column prop="balanceInfo.memberModel4Count" label="高级模型[会员]" width="120" align="center" />
         <el-table-column prop="balanceInfo.memberDrawMjCount" label="绘画余额[会员]" width="120" align="center" />
         <el-table-column prop="balanceInfo.useModel3Count" label="已用基础模型" width="160" align="center">
           <template #default="scope">
             {{ `${scope.row.balanceInfo?.useModel3Count || 0}次 | ${scope.row.balanceInfo?.useModel3Token || 0} Token` }}
           </template>
         </el-table-column>
-        <!--        <el-table-column prop="balanceInfo.useModel4Count" label="已用高级模型" width="160" align="center"> -->
-        <!--          <template #default="scope"> -->
-        <!--            {{ `${scope.row.balanceInfo?.useModel4Count || 0}次 | ${scope.row.balanceInfo?.useModel4Token || 0} Token` }} -->
-        <!--          </template> -->
-        <!--        </el-table-column> -->
+        <el-table-column prop="balanceInfo.useModel4Count" label="已用高级模型" width="160" align="center">
+          <template #default="scope">
+            {{ `${scope.row.balanceInfo?.useModel4Count || 0}次 | ${scope.row.balanceInfo?.useModel4Token || 0} Token` }}
+          </template>
+        </el-table-column>
         <el-table-column prop="balanceInfo.useDrawMjToken" label="已用绘画积分" width="160" align="center">
           <template #default="scope">
             {{ `${scope.row.balanceInfo?.useDrawMjToken || 0} Token` }}
