@@ -11,6 +11,7 @@ export const RechargeTypeMap: RechargeType = {
   6: '扫码购买充值',
   7: 'MJ绘画失败退款',
   8: '签到奖励',
+  9: '广告奖励',
 }
 
 // 0：未支付、1：已支付、2、支付失败、3：支付超时）
