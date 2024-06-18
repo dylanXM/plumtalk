@@ -189,4 +189,12 @@ export class ChatgptController {
   async queryChatPreList() {
     return await this.chatgptService.queryChatPreList();
   }
+
+  @Post('contentParse')
+  @ApiOperation({ summary: '内容解析' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async contentParse(@Req() req: Request, @Body() body: any) {
+    return await this.chatgptService.contentParse(req, body);
+  }
 }

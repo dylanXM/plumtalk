@@ -1050,4 +1050,9 @@ export class ChatgptService implements OnModuleInit {
       maxRes,
     };
   }
+
+  /** 内容解析 */
+  async contentParse(req: Request, body: any) {
+
+  }
 }
