@@ -377,7 +377,7 @@ export class UserService {
     await this.userBalanceService.addBalanceToUser(userId, { model3Count, model4Count, drawMjCount });
     const res = await this.userBalanceService.saveRecordRechargeLog({
       userId,
-      rechargeType: RechargeType.ADMIN_GIFT,
+      rechargeType: RechargeType.ADV_REWARD,
       model3Count,
       model4Count,
       drawMjCount,

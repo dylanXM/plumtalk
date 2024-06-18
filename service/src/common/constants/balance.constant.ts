@@ -29,4 +29,5 @@ export const RechargeType = {
   SCAN_PAY: 6,
   DRAW_FAIL_REFUND: 7,
   SIGN_IN: 8,
+  ADV_REWARD: 9,
 };
