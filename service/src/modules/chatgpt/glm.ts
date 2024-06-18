@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { get_encoding } from '@dqbd/tiktoken';
 import { removeSpecialCharacters } from '@/common/utils';
+import { GLM_TOKEN } from '@/config/main';
 
 const tokenizer = get_encoding('cl100k_base');
 
@@ -19,8 +20,10 @@ function getFullUrl(proxyUrl = '') {
 
 let lastString = '';
 
-const token =
+const token = GLM_TOKEN ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNTM1MDQyNCwianRpIjoiMjNlZjJjMzktNzczZS00Yjc2LWEzYzgtNzEwMDk2MWEyNWQ1IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJkNDAyNTZjODg1OTA0OGMwODY1ZWNkZGU4ZWJkNzk0NSIsIm5iZiI6MTcxNTM1MDQyNCwiZXhwIjoxNzMwOTAyNDI0LCJ1aWQiOiI2NWQwOTIwNWNlMjhkZjlkNjkzMjk5M2IiLCJ1cGxhdGZvcm0iOiJpT1MiLCJyb2xlcyI6WyJ1bmF1dGhlZF91c2VyIl19.DyKKHWfvOn39WXW-jeHNw3EE1bEOnKvByPokfHyTkrI';
+
+console.log('token: ', GLM_TOKEN);
 
 export function sendMessageFromGlm(messagesHistory, inputs) {
   const { onProgress, maxToken, apiKey, model, temperature = 0.95, proxyUrl } = inputs;

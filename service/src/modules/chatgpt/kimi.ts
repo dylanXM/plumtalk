@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { get_encoding } from '@dqbd/tiktoken';
 import { removeSpecialCharacters } from '@/common/utils';
+import { KIMI_TOKEN } from '@/config/main';
 
 const tokenizer = get_encoding('cl100k_base');
 
@@ -19,7 +20,7 @@ function getFullUrl(proxyUrl = '') {
 
 let lastString = '';
 
-const token =
+const token = KIMI_TOKEN ||
   'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ1c2VyLWNlbnRlciIsImV4cCI6MTcyMjQxNzExOSwiaWF0IjoxNzE0NjQxMTE5LCJqdGkiOiJjb3BsaG5xdWw3MjI3dG9zODNyMCIsInR5cCI6InJlZnJlc2giLCJzdWIiOiJjbXE2Zjk2Y3A3ZmR2cjE0dGNsZyIsInNwYWNlX2lkIjoiY21xNmY5NmNwN2ZkdnIxNHRjbDAiLCJhYnN0cmFjdF91c2VyX2lkIjoiY21xNmY5NmNwN2ZkdnIxNHRja2cifQ.uDmwP-IlsJfDaVA1KEQgfNbTSB1yXv_D_8vbwz7d2_ysDY4ACbksChlXZbnApUte0hGh3jJabD2VZWui1vBEWQ';
 
 export function sendMessageFromKimi(messagesHistory, inputs) {

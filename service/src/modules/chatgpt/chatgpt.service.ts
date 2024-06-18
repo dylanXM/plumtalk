@@ -15,7 +15,7 @@ import {
   removeSpecialCharacters,
   selectKeyWithWeight,
 } from '@/common/utils';
-import axios from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 import { UserBalanceService } from '../userBalance/userBalance.service';
 import { DeductionKey } from '@/common/constants/balance.constant';
 import { ChatLogService } from '../chatLog/chatLog.service';
