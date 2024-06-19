@@ -46,6 +46,7 @@ import { ChatPreTypeEntity } from './chatPreType.entity';
 import { sendMessageFromKimi } from './kimi';
 import { drawImageFromGlm, sendMessageFromGlm } from './glm';
 import { parse } from './parse';
+import { ParseEntity } from '../parse/parse.entity';
 
 interface Key {
   id: number;
@@ -75,6 +76,8 @@ export class ChatgptService implements OnModuleInit {
     private readonly chatPreTypeEntity: Repository<ChatPreTypeEntity>,
     @InjectRepository(ChatPreEntity)
     private readonly chatPreEntity: Repository<ChatPreEntity>,
+    @InjectRepository(ParseEntity)
+    private readonly parseRepository: Repository<ParseEntity>,
     private readonly configService: ConfigService,
     private readonly userBalanceService: UserBalanceService,
     private readonly chatLogService: ChatLogService,
@@ -1056,7 +1059,7 @@ export class ChatgptService implements OnModuleInit {
   async contentParse(body: any, req: Request) {
     await this.userService.checkUserStatus(req.user);
     const money = 10;
-    await this.userBalanceService.validateBalance(req, 'model3Count', money);
+    await this.userBalanceService.validateBalance(req, 'model3', money);
     /* 从glm的卡池随机拿一个key */
     const detailKeyInfo = await this.modelsService.getGlmKey();
     const keyId = detailKeyInfo?.id;
@@ -1064,6 +1067,14 @@ export class ChatgptService implements OnModuleInit {
     console.log('keyId: ', keyId, proxyResUrl, key);
     const res = await parse(body.messagesHistory, { key, proxyResUrl, keyId });
     await this.userBalanceService.deductFromBalance(req.user.id, 'model3', 10, money);
+    // todo 存入数据库
+    const { model } = detailKeyInfo;
+    await this.parseRepository.save({
+      userId: req.user.id,
+      model,
+      messages: JSON.stringify(body.messagesHistory),
+      result: JSON.stringify(res),
+    });
     return res;
   }
 }

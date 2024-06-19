@@ -27,6 +27,8 @@ import { ChatBoxTypeEntity } from './chatBoxType.entity';
 import { ChatBoxEntity } from './chatBox.entity';
 import { ChatPreTypeEntity } from './chatPreType.entity';
 import { ChatPreEntity } from './chatPre.entity';
+import { ParseEntity } from '../parse/parse.entity';
+
 @Global()
 @Module({
   imports: [
@@ -50,11 +52,12 @@ import { ChatPreEntity } from './chatPre.entity';
       ChatBoxTypeEntity,
       ChatBoxEntity,
       ChatPreTypeEntity,
-      ChatPreEntity
+      ChatPreEntity,
+      ParseEntity,
     ]),
   ],
   controllers: [ChatgptController],
   providers: [ChatgptService, UserBalanceService, UserService, VerificationService, ChatLogService, RedisCacheService],
-  exports: [ChatgptService]
+  exports: [ChatgptService],
 })
 export class ChatgptModule {}

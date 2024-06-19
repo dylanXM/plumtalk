@@ -37,6 +37,7 @@ import { SalesModule } from './modules/sales/sales.module';
 import { SigninModule } from './modules/signin/signin.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { ModelsModule } from './modules/models/models.module';
+import { ParseModule } from './modules/parse/parse.module';
 
 @Global()
 @Module({
@@ -75,6 +76,7 @@ import { ModelsModule } from './modules/models/models.module';
     SigninModule,
     MenuModule,
     ModelsModule,
+    ParseModule,
   ],
   providers: [
     {
