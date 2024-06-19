@@ -15,7 +15,7 @@ import {
   removeSpecialCharacters,
   selectKeyWithWeight,
 } from '@/common/utils';
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { UserBalanceService } from '../userBalance/userBalance.service';
 import { DeductionKey } from '@/common/constants/balance.constant';
 import { ChatLogService } from '../chatLog/chatLog.service';
@@ -45,6 +45,7 @@ import { ChatPreEntity } from './chatPre.entity';
 import { ChatPreTypeEntity } from './chatPreType.entity';
 import { sendMessageFromKimi } from './kimi';
 import { drawImageFromGlm, sendMessageFromGlm } from './glm';
+import { parse } from './parse';
 
 interface Key {
   id: number;
@@ -1052,7 +1053,17 @@ export class ChatgptService implements OnModuleInit {
   }
 
   /** 内容解析 */
-  async contentParse(req: Request, body: any) {
-
+  async contentParse(body: any, req: Request) {
+    await this.userService.checkUserStatus(req.user);
+    const money = 10;
+    await this.userBalanceService.validateBalance(req, 'model3Count', money);
+    /* 从glm的卡池随机拿一个key */
+    const detailKeyInfo = await this.modelsService.getGlmKey();
+    const keyId = detailKeyInfo?.id;
+    const { key, proxyResUrl } = await this.formatModelToken(detailKeyInfo);
+    console.log('keyId: ', keyId, proxyResUrl, key);
+    const res = await parse(body.messagesHistory, { key, proxyResUrl, keyId });
+    await this.userBalanceService.deductFromBalance(req.user.id, 'model3', 10, money);
+    return res;
   }
 }

@@ -248,6 +248,15 @@ export class ModelsService {
     return getRandomItemFromArray(drawkeys);
   }
 
+  /** 获取glmkey */
+  async getGlmKey() {
+    const glmkeys = await this.modelsEntity.find({ where: { keyType: 6, status: true } });
+    if (!glmkeys.length) {
+      throw new HttpException('当前未指定特殊模型KEY、前往后台模型池设置吧！', HttpStatus.BAD_REQUEST);
+    }
+    return getRandomItemFromArray(glmkeys);
+  }
+
   /* 获取所有key */
   async getAllKey() {
     return await this.modelsEntity.find();

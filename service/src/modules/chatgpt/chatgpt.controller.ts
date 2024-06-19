@@ -195,6 +195,6 @@ export class ChatgptController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async contentParse(@Req() req: Request, @Body() body: any) {
-    return await this.chatgptService.contentParse(req, body);
+    return await this.chatgptService.contentParse(body, req);
   }
 }
