@@ -2,17 +2,12 @@ import { setupLayouts } from 'virtual:meta-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 import type { RouteRecordRaw } from 'vue-router'
 import UserMenu from './modules/user.menu'
-import SalesMenu from './modules/sales.menu'
 import PackageMenu from './modules/package.menu'
 import ChatMenu from './modules/chat.menu'
 import OrderMenu from './modules/order.menu'
 import AppMenu from './modules/app.menu'
-import SystemMenu from './modules/system.menu'
-import MjMenu from './modules/mj.menu'
 import PayMenu from './modules/pay.menu'
-import ClientMenu from './modules/client.menu'
 import StorageMenu from './modules/storage.menu'
-import SecureMenu from './modules/secure.menu'
 import AiMenu from './modules/ai.menu'
 import LoginMenu from './modules/login.menu'
 
@@ -104,13 +99,13 @@ const asyncRoutes: Route.recordMainRaw[] = [
       OrderMenu,
       PackageMenu,
       AppMenu,
-      SalesMenu,
+      // SalesMenu,
       PayMenu,
-      MjMenu,
+      // MjMenu,
       StorageMenu,
-      ClientMenu,
-      SecureMenu,
-      SystemMenu,
+      // ClientMenu,
+      // SecureMenu,
+      // SystemMenu,
     ],
   },
 ]
