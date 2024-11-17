@@ -6,11 +6,7 @@ meta:
 <script lang="ts" setup>
 import { computed, onMounted, reactive } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import ApiModels from '@/api/modules/models'
 import ApiMj from '@/api/modules/mj'
-import { utcToShanghaiTime } from '@/utils/utcformatTime'
-
-import { MODEL_LIST, ModelTypeLabelMap, QUESTION_STATUS_OPTIONS, MODELTYPELIST, MODELSMAP, DEDUCTTYPELIST, MODELSMAPLIST } from '@/constants/index'
 
 const formBlukRef = ref<FormInstance>()
 const formRef = ref<FormInstance>()
@@ -18,8 +14,6 @@ const total = ref(0)
 const loading = ref(false)
 const modelLoading = ref(false)
 const bulkVisible = ref(false)
-
-
 
 const formPackageRef = ref<FormInstance>()
 const activePromptId = ref(0)
@@ -29,7 +23,7 @@ const formPackage = reactive({
   title: '',
   order: 100,
   prompt: '',
-  aspect: '16:9'
+  aspect: '16:9',
 })
 
 interface AspectItem {
@@ -43,7 +37,6 @@ const aspectList = ref<AspectItem[]>([
   { aspect: '16:9' },
   { aspect: '9:16' },
 ])
-
 
 const rules = reactive<FormRules>({
   isCarryParams: [{ required: true, message: '请选择你是否需要携带参数', trigger: 'change' }],
@@ -69,7 +62,6 @@ const dialogButton = computed(() => {
 
 const tableData = ref([])
 
-
 /* 查询所有内容 */
 async function queryAllPrompts() {
   try {
@@ -94,7 +86,7 @@ function handleEditPrompt(row: any) {
   activePromptId.value = row.id
   const { status, title, prompt, order, isCarryParams, aspect } = row
   nextTick(() => {
-    Object.assign( formPackage, {status, title, prompt, order, isCarryParams, aspect })
+    Object.assign(formPackage, { status, title, prompt, order, isCarryParams, aspect })
   })
   visible.value = true
 }
@@ -104,7 +96,7 @@ async function handlerSubmit(formEl: FormInstance | undefined) {
     if (valid) {
       const params: any = JSON.parse(JSON.stringify(formPackage))
       delete params.id
-      activePromptId.value && ( params.id = activePromptId.value )
+      activePromptId.value && (params.id = activePromptId.value)
       await ApiMj.setPrompt(params)
       ElMessage({ type: 'success', message: '操作成功！' })
       activePromptId.value = 0
@@ -113,7 +105,6 @@ async function handlerSubmit(formEl: FormInstance | undefined) {
     }
   })
 }
-
 
 onMounted(() => {
   queryAllPrompts()
@@ -135,9 +126,11 @@ onMounted(() => {
       <el-table v-loading="loading" border :data="tableData" style="width: 100%;" size="large">
         <el-table-column prop="title" label="提示词名称" width="180" />
         <el-table-column prop="aspect" label="图片比例" width="180" />
-        <el-table-column prop="prompt" label="提示词内容" >
+        <el-table-column prop="prompt" label="提示词内容">
           <template #default="scope">
-            <div class="overflow-y-scroll w-full whitespace-nowrap">{{ scope.row.prompt }}</div>
+            <div class="overflow-y-scroll w-full whitespace-nowrap">
+              {{ scope.row.prompt }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="status" align="center" label="提示词状态" width="110">
@@ -147,7 +140,7 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="isCarryParams" align="center" label="携带用户的参数"  width="150">
+        <el-table-column prop="isCarryParams" align="center" label="携带用户的参数" width="150">
           <template #default="scope">
             <el-tag :type="scope.row.isCarryParams ? 'success' : 'warning'">
               {{ scope.row.isCarryParams ? '携带' : '不携带' }}
@@ -182,34 +175,38 @@ onMounted(() => {
         :rules="rules"
       >
         <el-form-item label="启用状态" prop="status">
-          <el-switch v-model="formPackage.status"/>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="right"
-        >
-          <template #content>
-            <div style="width: 250px;">
-              关闭当前提示词、用户端将不再展示！
-            </div>
-          </template>
-          <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
-        </el-tooltip>
+          <el-switch v-model="formPackage.status" />
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <template #content>
+              <div style="width: 250px;">
+                关闭当前提示词、用户端将不再展示！
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="携带左侧参数" prop="isCarryParams">
-          <el-switch  v-model="formPackage.isCarryParams"/>
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="right"
-        >
-          <template #content>
-            <div style="width: 250px;">
-              携带左侧参数将会对提示词的参数复写、不携带则以自定义提示词中的指令参数为准！
-            </div>
-          </template>
-          <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
-        </el-tooltip>
+          <el-switch v-model="formPackage.isCarryParams" />
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <template #content>
+              <div style="width: 250px;">
+                携带左侧参数将会对提示词的参数复写、不携带则以自定义提示词中的指令参数为准！
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
         </el-form-item>
         <el-form-item label="排序Order" prop="order">
           <el-input v-model="formPackage.order" placeholder="排序id越大越靠前" />
@@ -223,9 +220,8 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="提示词内容" prop="proxyUrl">
-          <el-input type="textarea" :rows="4" v-model="formPackage.prompt" placeholder="请填写提示词详细内容！" />
+          <el-input v-model="formPackage.prompt" type="textarea" :rows="4" placeholder="请填写提示词详细内容！" />
         </el-form-item>
-
       </el-form>
       <template #footer>
         <span class="flex justify-end mr-5">
@@ -236,10 +232,8 @@ onMounted(() => {
         </span>
       </template>
     </el-dialog>
-
   </div>
 </template>
-
 
 <style>
 .header {

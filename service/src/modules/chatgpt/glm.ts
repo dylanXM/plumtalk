@@ -20,15 +20,14 @@ function getFullUrl(proxyUrl = '') {
 
 let lastString = '';
 
-const token = GLM_TOKEN ||
+const token =
+  GLM_TOKEN ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNTM1MDQyNCwianRpIjoiMjNlZjJjMzktNzczZS00Yjc2LWEzYzgtNzEwMDk2MWEyNWQ1IiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJkNDAyNTZjODg1OTA0OGMwODY1ZWNkZGU4ZWJkNzk0NSIsIm5iZiI6MTcxNTM1MDQyNCwiZXhwIjoxNzMwOTAyNDI0LCJ1aWQiOiI2NWQwOTIwNWNlMjhkZjlkNjkzMjk5M2IiLCJ1cGxhdGZvcm0iOiJpT1MiLCJyb2xlcyI6WyJ1bmF1dGhlZF91c2VyIl19.DyKKHWfvOn39WXW-jeHNw3EE1bEOnKvByPokfHyTkrI';
-
-console.log('token: ', GLM_TOKEN);
 
 export function sendMessageFromGlm(messagesHistory, inputs) {
   const { onProgress, maxToken, apiKey, model, temperature = 0.95, proxyUrl } = inputs;
   const max_tokens = compilerToken(model, maxToken);
-  console.log('max_tokens: ', inputs);
+  console.log('max_tokens: ', inputs, getFullUrl(proxyUrl));
   const options: AxiosRequestConfig = {
     method: 'POST',
     url: `${getFullUrl(proxyUrl)}/chat/completions`,
@@ -37,10 +36,9 @@ export function sendMessageFromGlm(messagesHistory, inputs) {
       Authorization: `Bearer ${token}`,
     },
     data: {
-      id: '66402bcb73e16cd2f8b1bcec',
       max_tokens,
       temperature,
-      model: '66402bcb73e16cd2f8b1bcec',
+      model: 'glm-4-flash',
       messages: messagesHistory,
       use_search: true,
     },

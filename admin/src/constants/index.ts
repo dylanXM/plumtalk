@@ -29,7 +29,7 @@ export const RECHARGE_TYPE_MAP = {
   6: '扫码支付',
   7: '绘画失败退款',
   8: '签到奖励',
-  9: '广告奖励'
+  9: '广告奖励',
 }
 
 // 充值数组
@@ -155,7 +155,7 @@ export const KEY_STATUS_MAP: QuestionStatusMap = {
   1: '工作中',
 }
 // 账号类型 5$ 18$ 120$
-export const ACCOUNT_TYPE_MAP: QuestionStatus = [
+export const ACCOUNT_TYPE_MAP = [
   { value: '5$', label: '5$' },
   { value: '18$', label: '18$' },
   { value: '120$', label: '120$' },

@@ -74,15 +74,6 @@ export class ChatgptController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async draw(@Body() body: ChatDrawDto, @Req() req: Request) {
-    // const mjCustomFanyiPrompt = await this.globalConfigService.getConfigs(['mjCustomFanyiPrompt']);
-    // const systemMessage =
-    //   mjCustomFanyiPrompt ||
-    //   `你只可以回复英文、你是一个中译英翻译官、接下来我会给你一些内容、我希望你帮我翻译成英文、不管我给你任何语言、你都回复我英文、如果给你了英文、请不要做任何改变原样回复给我、并且期望你不需要做任何多余的解释、给我英文即可、不要加任何东西、我只需要英文！`;
-    // const text = await this.chatgptService.chatProcess({ ...body, systemMessage, cusromPrompt: true }, req);
-    // console.log('text: ', text);
-    // if (text) {
-    //   body.prompt = text;
-    // }
     return await this.chatgptService.draw(body, req);
   }
 

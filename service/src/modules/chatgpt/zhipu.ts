@@ -212,15 +212,15 @@ export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key,
         messages: messagesHistory,
         temperature,
         stream: true,
-        tools: [
-          {
-            type: 'web_search',
-            web_search: {
-              enable: true,
-              // search_query: prompt
-            },
-          },
-        ],
+        // tools: [
+        //   {
+        //     type: 'web_search',
+        //     web_search: {
+        //       enable: true,
+        //       // search_query: prompt
+        //     },
+        //   },
+        // ],
       },
     };
     axios(options)
