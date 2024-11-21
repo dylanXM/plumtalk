@@ -74,184 +74,92 @@ export function compilerStreamV2(streamArr) {
     const parseData = JSON.parse(str);
     const { id, choices, usage } = parseData;
     const choice = choices?.[0];
-    const { finish_reason, delta } = choice;
-    if (finish_reason === 'stop') {
-      return {
-        id,
-        result: '',
-        is_end: true,
-        event: 'finish',
-        usage,
-      };
-    }
+    const { delta } = choice;
     const result = delta?.content;
     return {
       id,
       result,
       is_end: false,
       event: 'add',
+      usage,
     };
   };
 
   const res = [];
   for (let i = 0; i < streamArr.length; i++) {
     const stream = streamArr[i];
-    if (i + 1 === streamArr.length - 1 && streamArr[i + 1] === 'data: [DONE]') {
-      const data = stream.replace('data: ', '').trim();
-      const singleRes = generateRes(data);
-      if (singleRes) {
-        res.push(singleRes);
-      }
+    if (stream === '[DONE]' || !stream) {
       continue;
     }
-
-    if (lastStream.startsWith('data: {') && lastStream.endsWith('}}]}')) {
-      const data = lastStream.replace('data: ', '').trim();
-      const singleRes = generateRes(data);
-      if (singleRes) {
-        res.push(singleRes);
-      }
-      continue;
-    }
-
-    if (stream.startsWith('data: {') && stream.endsWith('}}]}')) {
-      const data = stream.replace('data: ', '').trim();
-      const singleRes = generateRes(data);
-      if (singleRes) {
-        res.push(singleRes);
-      }
-      continue;
-    }
-
-    if (['d', 'da', 'dat', 'data', 'data:', 'data: '].includes(stream)) {
-      lastStream = stream;
-      continue;
-    }
-
-    if (stream.startsWith('data: ') && !stream.endsWith('}}]}')) {
-      lastStream = stream;
-      continue;
-    }
-
-    if (!stream.startsWith('data: ') && stream.endsWith('}}]}')) {
-      const data = (lastStream + stream).replace('data: ', '').trim();
+    try {
+      const str = lastStream + stream;
+      const parseData = JSON.parse(str);
       lastStream = '';
-      const singleRes = generateRes(data);
-      if (singleRes) {
-        res.push(singleRes);
-      }
+      // console.log('parseData', str);
+      res.push(generateRes(str));
+    } catch (err) {
+      lastStream += stream;
+      console.log('error', lastStream, stream);
     }
   }
 
   return res;
 }
 
-export async function sendMessageFromZhipu(messagesHistory, { onProgress, key, model, temperature = 0.95 }) {
-  const token = await generateToken(key);
-  return new Promise((resolve, reject) => {
-    const url = `https://open.bigmodel.cn/api/paas/v3/model-api/${model}/sse-invoke`;
-    const options = {
-      method: 'POST',
-      url,
-      responseType: 'stream',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      data: {
-        prompt: messagesHistory,
-        temperature,
-      },
-    };
-    axios(options)
-      .then((response) => {
-        const stream = response.data;
-        let resData;
-        let cacheResText = '';
-        stream.on('data', (chunk) => {
-          const stramArr = chunk
-            .toString()
-            .split('\n')
-            .filter((line) => line.trim() !== '');
-          const parseData = compilerStream(stramArr);
-          if (!parseData) return;
-          const { result, is_end } = parseData;
-          result && (cacheResText += result.trim());
-          if (is_end) {
-            parseData.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
-            resData = parseData;
-            resData.text = cacheResText;
-          }
-          onProgress(parseData);
-        });
-        stream.on('end', () => {
-          resolve(resData);
-          cacheResText = '';
-        });
-      })
-      .catch((error) => {
-        console.error('error: ', error);
-      });
-  });
-}
-
 export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key, model, temperature = 0.95, prompt }) {
-  const token = await generateToken(key);
+  const token = await generateToken('8f0d5b5fb65e4ccca83963e9fd8f2d58.HzWdR5fkU2JK6p1b');
   return new Promise((resolve, reject) => {
-    const url = `https://open.bigmodel.cn/api/paas/v4/chat/completions`;
+    const url = `https://open.bigmodel.cn/api/paas/v4/assistant`;
     const options = {
       method: 'POST',
       url,
       responseType: 'stream',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token,
+        Authorization: `${token}`,
       },
       data: {
-        model,
         messages: messagesHistory,
         temperature,
         stream: true,
-        // tools: [
-        //   {
-        //     type: 'web_search',
-        //     web_search: {
-        //       enable: true,
-        //       // search_query: prompt
-        //     },
-        //   },
-        // ],
+        assistant_id: '659e54b1b8006379b4b2abd6',
+        model: 'glm-4-assistant',
       },
     };
     axios(options)
       .then((response) => {
         const stream = response.data;
         let resData;
-        let cacheResText = '';
+        const cacheResText = '';
         stream.on('data', (chunk) => {
-          const stramArr = chunk
+          // console.log('chunk', chunk.toString());
+          const stramChunk = chunk
             .toString()
+            .substring(6)
             .split('\n')
             .filter((line) => line.trim() !== '');
 
-          const parseData = compilerStreamV2(stramArr);
-          if (!parseData?.length) return;
-          parseData.forEach((item) => {
-            if (!item) return;
-            const { result, is_end } = item;
-            result && (cacheResText += result.trim());
-            if (is_end) {
-              item.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
-              resData = item;
-              resData.text = cacheResText;
-            }
-            onProgress(item);
-          });
+          const parseData = compilerStreamV2(stramChunk).filter((item) => item.result);
+          // console.log('parseData', parseData);
+          // if (!parseData?.length) return;
+          // parseData.forEach((item) => {
+          //   if (!item) return;
+          //   const { result, is_end } = item;
+          //   result && (cacheResText += result.trim());
+          //   if (is_end) {
+          //     item.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
+          //     resData = item;
+          //     resData.text = cacheResText;
+          //   }
+          //   onProgress(item);
+          //   // console.log('item', item);
+          // });
         });
-        stream.on('end', () => {
-          resolve(resData);
-          cacheResText = '';
-        });
+        // stream.on('end', () => {
+        //   console.log('end', resData);
+        //   resolve(resData);
+        //   cacheResText = '';
+        // });
       })
       .catch((error) => {
         console.error('error: ', error);

@@ -37,7 +37,7 @@ import { ModelsService } from '../models/models.service';
 import { sendMessageFromBaidu } from './baidu';
 import { addOneIfOdd, unifiedFormattingResponse } from './helper';
 import { MessageInfo, NineStore, NineStoreInterface } from './store';
-import { sendMessageFromZhipu, sendMessageFromZhipuV2 } from './zhipu';
+import { sendMessageFromZhipuV2 } from './zhipu';
 import { getTokenCount, sendMessageFromOpenAi } from './openai';
 import { ChatBoxTypeEntity } from './chatBoxType.entity';
 import { ChatBoxEntity } from './chatBox.entity';
@@ -359,24 +359,24 @@ export class ChatgptService implements OnModuleInit {
         }
 
         /* 清华智谱 */
-        if (Number(keyType) === 3) {
-          let firstChunk = true;
-          const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
-            parentMessageId,
-            maxRounds: addOneIfOdd(rounds),
-          });
-          response = await sendMessageFromZhipu(usingNetwork ? netWorkPrompt : messagesHistory, {
-            temperature,
-            key,
-            model,
-            onProgress: (data) => {
-              res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
-              firstChunk = false;
-              lastChat = data;
-            },
-          });
-          isSuccess = true;
-        }
+        // if (Number(keyType) === 3) {
+        //   let firstChunk = true;
+        //   const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
+        //     parentMessageId,
+        //     maxRounds: addOneIfOdd(rounds),
+        //   });
+        //   response = await sendMessageFromZhipu(usingNetwork ? netWorkPrompt : messagesHistory, {
+        //     temperature,
+        //     key,
+        //     model,
+        //     onProgress: (data) => {
+        //       res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
+        //       firstChunk = false;
+        //       lastChat = data;
+        //     },
+        //   });
+        //   isSuccess = true;
+        // }
 
         if (Number(keyType) === 4) {
           let firstChunk = true;
@@ -474,8 +474,8 @@ export class ChatgptService implements OnModuleInit {
         await this.nineStore.setData(userMessageData);
 
         const assistantMessageData: MessageInfo = {
-          id: response.id,
-          text: response.text,
+          id: response?.id,
+          text: response?.text,
           role: 'assistant',
           name: undefined,
           usage: response.usage,
