@@ -38,7 +38,6 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
       messages: messagesHistory,
     },
   };
-  console.log('options: ', options);
   const prompt = messagesHistory[messagesHistory.length - 1]?.content;
   return new Promise(async (resolve, reject) => {
     try {

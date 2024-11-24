@@ -15,55 +15,6 @@ export function generateToken(apikey, expSeconds = 1000 * 60 * 60 * 24 * 360) {
   return jwt.sign(payload, secret, { algorithm: 'HS256', header: { alg: 'HS256', sign_type: 'SIGN' } });
 }
 
-/* 解析最后一次结果 */
-export function compilerMetaJsonStr(data): any {
-  let jsonStr = {};
-  try {
-    /*
-      {
-        task_status: 'SUCCESS',
-        usage: { completion_tokens: 49, prompt_tokens: 719, total_tokens: 768 },
-        task_id: '8008779509197849552',
-        request_id: '8008779509197849552'
-      }
-    */
-    jsonStr = JSON.parse(data);
-  } catch (error) {
-    /* 解析失败暂定一个固定值 待优化 */
-    jsonStr = {
-      usage: {
-        completion_tokens: 49,
-        prompt_tokens: 333,
-        total_tokens: 399,
-      },
-    };
-    console.error('json parse error from zhipu!', data);
-  }
-  return jsonStr;
-}
-
-/* 格式化信息并且输出为和百度一样的格式  前端不用变动了 */
-export function compilerStream(streamArr) {
-  console.log(streamArr, typeof streamArr);
-  if (streamArr.length === 3) {
-    return {
-      event: streamArr[0].replace('event:', ''),
-      id: streamArr[1].replace('id:', ''),
-      is_end: false,
-      result: streamArr[2].replace('data:', '').trim(),
-    };
-  }
-  if (streamArr.length === 4) {
-    return {
-      event: streamArr[0].replace('event:', ''),
-      id: streamArr[1].replace('id:', ''),
-      result: streamArr[2].replace('data:', '').trim(),
-      is_end: true,
-      usage: compilerMetaJsonStr(streamArr[3].replace('meta:', ''))?.usage,
-    };
-  }
-}
-
 /* 格式化信息并且输出为和百度一样的格式  前端不用变动了 */
 let lastStream = '';
 export function compilerStreamV2(streamArr) {
@@ -79,7 +30,6 @@ export function compilerStreamV2(streamArr) {
     return {
       id,
       result,
-      is_end: false,
       event: 'add',
       usage,
     };
@@ -87,19 +37,18 @@ export function compilerStreamV2(streamArr) {
 
   const res = [];
   for (let i = 0; i < streamArr.length; i++) {
-    const stream = streamArr[i];
-    if (stream === '[DONE]' || !stream) {
+    const stream = streamArr[i].startsWith('data:') ? streamArr[i].slice(5) : streamArr[i];
+    if (stream.trim() === '[DONE]' || !stream) {
       continue;
     }
     try {
       const str = lastStream + stream;
       const parseData = JSON.parse(str);
       lastStream = '';
-      // console.log('parseData', str);
-      res.push(generateRes(str));
+      const currentRes = generateRes(str);
+      res.push(currentRes);
     } catch (err) {
       lastStream += stream;
-      console.log('error', lastStream, stream);
     }
   }
 
@@ -130,36 +79,28 @@ export async function sendMessageFromZhipuV2(messagesHistory, { onProgress, key,
       .then((response) => {
         const stream = response.data;
         let resData;
-        const cacheResText = '';
+        let cacheResText = '';
         stream.on('data', (chunk) => {
-          // console.log('chunk', chunk.toString());
           const stramChunk = chunk
             .toString()
-            .substring(6)
             .split('\n')
             .filter((line) => line.trim() !== '');
 
-          const parseData = compilerStreamV2(stramChunk).filter((item) => item.result);
-          // console.log('parseData', parseData);
-          // if (!parseData?.length) return;
-          // parseData.forEach((item) => {
-          //   if (!item) return;
-          //   const { result, is_end } = item;
-          //   result && (cacheResText += result.trim());
-          //   if (is_end) {
-          //     item.is_end = false; //为了在后续的消费之后添加上余额 本次并不是真正的结束
-          //     resData = item;
-          //     resData.text = cacheResText;
-          //   }
-          //   onProgress(item);
-          //   // console.log('item', item);
-          // });
+          const parseData = compilerStreamV2(stramChunk).map((item) => (!item.result ? { ...item, result: '' } : item));
+          if (!parseData?.length) return;
+          parseData.forEach((item) => {
+            if (!item) return;
+            const { result } = item;
+            cacheResText += result.trim();
+            resData = item;
+            resData.text = cacheResText;
+            onProgress(item);
+          });
         });
-        // stream.on('end', () => {
-        //   console.log('end', resData);
-        //   resolve(resData);
-        //   cacheResText = '';
-        // });
+        stream.on('end', () => {
+          resolve(resData);
+          cacheResText = '';
+        });
       })
       .catch((error) => {
         console.error('error: ', error);

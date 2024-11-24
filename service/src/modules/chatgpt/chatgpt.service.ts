@@ -507,7 +507,6 @@ export class ChatgptService implements OnModuleInit {
 
       /* 统一最终输出格式 */
       const formatResponse = await unifiedFormattingResponse(keyType, response, othersInfo);
-      console.log('formatResponse: ', formatResponse);
       const { prompt_tokens = 0, completion_tokens = 0, total_tokens = 0 } = formatResponse.usage;
 
       /* 区分扣除普通还是高级余额  model3: 普通余额  model4： 高级余额 */
