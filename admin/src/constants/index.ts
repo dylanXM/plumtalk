@@ -247,8 +247,6 @@ export const MODELTYPELIST = [
   { value: 2, label: '百度 - [千帆大模型]' },
   { value: 3, label: '清华 - [智谱大模型]' },
   { value: 4, label: '系统模型' },
-  { value: 5, label: 'kimi' },
-  { value: 6, label: 'glm' },
 ]
 
 export const MODELSMAP = {
@@ -256,8 +254,6 @@ export const MODELSMAP = {
   2: '百度文心',
   3: '清华智谱',
   4: '系统模型',
-  5: 'kimi',
-  6: 'glm',
 }
 
 export const MODELSMAPLIST = {
@@ -281,8 +277,6 @@ export const MODELSMAPLIST = {
     'BLOOMZ-7B',
     'Llama-2-7b-chat',
     'Llama-2-13b-chat',
-    // 'Llama-2-70b-chat',
-    // 'ChatGLM2-6B-32K',
     'Qianfan-BLOOMZ-7B-compressed',
     'Qianfan-Chinese-Llama-2-7B',
     'AquilaChat-7B',
@@ -294,15 +288,27 @@ export const MODELSMAPLIST = {
     'chatglm_lite_32k',
   ],
   4: [
-    'glm-4',
+    'glm-4-Plus',
+    'glm-4v-plus',
+    'cogview-3-plus',
+    'glm-4-flash',
+    'glm-4-long',
+    'glm-4-alltools',
+    'glm-4-assistant',
+    'glm-4-flashx',
+    'glm-4-0520',
+    'glm-4-airx',
     'glm-4v',
-    'glm-3-turbo',
-  ],
-  5: [
-    'kimi',
-  ],
-  6: [
-    'glm',
+    'glm-4-air',
+    'glm-4-9b',
+    'cogvideox',
+    'cogview-3',
+    'charglm-3',
+    'web-search-pro',
+    'codegeex-4',
+    'embedding-3',
+    'embedding-2',
+    'chatglm3-6b',
   ],
 }
 

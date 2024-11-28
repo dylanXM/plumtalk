@@ -63,4 +63,7 @@ export class ModelsEntity extends BaseEntity {
 
   @Column({ comment: '是否是绘画key: 0:不是 1：是', default: 0 })
   isDraw: boolean;
+
+  @Column({ comment: '能否上传文件: 0:不能 1：能', default: 0 })
+  canUpload: boolean;
 }

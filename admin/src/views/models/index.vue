@@ -63,13 +63,13 @@ function handlerCloseDialog(formEl: FormInstance | undefined) {
   formEl?.resetFields()
 }
 
-const modelList = computed(() => MODELSMAPLIST[formPackage.keyType])
+const modelList = computed(() => MODELSMAPLIST[formPackage.keyType as keyof typeof MODELSMAPLIST])
 
 const dialogTitle = computed(() => {
   return activeModelKeyId.value ? '更新秘钥' : '新增秘钥'
 })
 
-const labelKeyName = computed(() => ModelTypeLabelMap[formPackage.keyType])
+const labelKeyName = computed(() => ModelTypeLabelMap[formPackage.keyType as keyof typeof ModelTypeLabelMap])
 
 const dialogButton = computed(() => {
   return activeModelKeyId.value ? '确认更新' : '确认新增'
@@ -183,7 +183,7 @@ onMounted(() => {
         <el-table-column prop="keyType" label="模型类型" width="120">
           <template #default="scope">
             <el-tag type="success">
-              {{ MODELSMAP[scope.row.keyType] }}
+              {{ MODELSMAP[scope.row.keyType as keyof typeof MODELSMAP] }}
             </el-tag>
           </template>
         </el-table-column>

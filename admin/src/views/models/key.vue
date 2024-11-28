@@ -45,6 +45,7 @@ const formPackage = reactive({
   deduct: 1,
   deductType: 1,
   maxRounds: 12,
+  canUpload: false,
 })
 
 const rules = reactive<FormRules>({
@@ -491,7 +492,7 @@ onMounted(() => {
         <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="调用超时时间" prop="timeout">
           <el-input v-model.number="formPackage.timeout" placeholder="请填写key的超时时间单位（秒）！" />
         </el-form-item>
-        <el-form-item v-if="[1, 4].includes(Number(formPackage.keyType))" label="是否支持绘画" prop="isDraw">
+        <el-form-item v-if="[1].includes(Number(formPackage.keyType))" label="是否支持绘画" prop="isDraw">
           <el-switch
             v-model="formPackage.isDraw"
           />
@@ -510,7 +511,21 @@ onMounted(() => {
             </el-icon>
           </el-tooltip>
         </el-form-item>
-        <el-form-item v-if="[1, 5, 6, 7].includes(Number(formPackage.keyType))" label="指定代理地址" prop="proxyUrl">
+        <el-form-item v-if="[4].includes(Number(formPackage.keyType))" label="支持文件上传" prop="canUpload">
+          <el-switch
+            v-model="formPackage.isDraw"
+          />
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            placement="right"
+          >
+            <el-icon class="ml-3 cursor-pointer">
+              <QuestionFilled />
+            </el-icon>
+          </el-tooltip>
+        </el-form-item>
+        <el-form-item v-if="[1, 4].includes(Number(formPackage.keyType))" label="指定代理地址" prop="proxyUrl">
           <el-input v-model.number="formPackage.proxyUrl" placeholder="如需使用代理请填写、不填写默认使用全局配置！" />
         </el-form-item>
       </el-form>
