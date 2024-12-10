@@ -358,26 +358,6 @@ export class ChatgptService implements OnModuleInit {
           isSuccess = true;
         }
 
-        /* 清华智谱 */
-        // if (Number(keyType) === 3) {
-        //   let firstChunk = true;
-        //   const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
-        //     parentMessageId,
-        //     maxRounds: addOneIfOdd(rounds),
-        //   });
-        //   response = await sendMessageFromZhipu(usingNetwork ? netWorkPrompt : messagesHistory, {
-        //     temperature,
-        //     key,
-        //     model,
-        //     onProgress: (data) => {
-        //       res.write(firstChunk ? JSON.stringify(data) : `\n${JSON.stringify(data)}`);
-        //       firstChunk = false;
-        //       lastChat = data;
-        //     },
-        //   });
-        //   isSuccess = true;
-        // }
-
         if (Number(keyType) === 4) {
           let firstChunk = true;
           const { parentMessageId, completionParams, systemMessage } = mergedOptions;
