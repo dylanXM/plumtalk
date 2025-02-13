@@ -268,6 +268,7 @@ export const MODELSMAPLIST = {
     'gpt-4-1106-preview',
     'gpt-4-vision-preview',
     'gpt-4o-2024-05-13',
+    'deepseek-chat',
   ],
   2: [
     'ERNIE-Bot',

@@ -31,9 +31,7 @@ export function sendMessageFromOpenAi(messagesHistory, inputs) {
       Authorization: `Bearer ${removeSpecialCharacters(apiKey)}`,
     },
     data: {
-      max_tokens,
       stream: true,
-      temperature,
       model,
       messages: messagesHistory,
     },
